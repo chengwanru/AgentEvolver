@@ -43,8 +43,16 @@ class Sample(BaseModel):
     prompt_loss_mask: List[int] = None
     response_loss_mask: List[int] = None
     reward_scores: Dict[str, Any] = None
+    max_prompt_len: int = 8192
+    max_response_len: int = 32768
+    max_model_len: int = max_prompt_len + max_response_len
 
     def truncate_output_ids(self) -> None:
+        # if prompt is too long, discard this sample
+        if len(self.prompt_ids) > self.max_prompt_len:
+            self.discard()
+            return
+        
         self.input_ids = self.input_ids[: self.max_model_len]
         self.attention_mask = self.attention_mask[: self.max_model_len]
         self.position_ids = self.position_ids[: self.max_model_len]

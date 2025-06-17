@@ -10,7 +10,7 @@ data:
   max_prompt_length: 1024
   max_response_length: 1024
   train_batch_size: 256
-  val_batch_size: 8
+  val_batch_size: 2
   return_raw_chat: True
 
 actor_rollout_ref:
@@ -19,6 +19,7 @@ actor_rollout_ref:
     name: vllm
     mode: async
     multi_turn:
+      enabled: True
       format: llama3_json
       # tool_config_path: "./config/tool_config/gsm8k_tool_config.yaml"
     custom_dataflow_cls:

@@ -162,10 +162,8 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                             query=test_gen_batch_padded.non_tensor_batch["raw_prompt"][i],
                             env_type=self.config.beyond_agent.env_type
                          ) for i in range(len(test_gen_batch_padded))]
-                # print(tasks)
                 trajectories = self.explorer_manager.rollout(tasks, mode="validate")
-                print(trajectories[0])
-                import pdb;pdb.set_trace()
+                test_output_gen_batch_padded = self.explorer_manager.to_dataproto(trajectories)
                 # test_output_gen_batch_padded = self.explorer_manager.rollout(test_gen_batch_padded)
                 # test_output_gen_batch_padded = self.async_rollout_manager.generate_sequences(test_gen_batch_padded)
                 self.async_rollout_manager.sleep()
@@ -263,14 +261,14 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                 return
         
         # [0616] qingxu: add `RAY_DEBUG_POST_MORTEM` env var to activate breakpoint debugging
-        vscode_conditional_breakpoint()
+        # vscode_conditional_breakpoint()
 
         # add tqdm
         progress_bar = tqdm(total=self.total_training_steps, initial=self.global_steps, desc="Training Progress")
 
         # we start from step 1
         self.global_steps += 1
-        last_val_metrics = Nonetrain_dataloader
+        last_val_metrics = None
 
         for epoch in range(self.config.trainer.total_epochs):
             for batch_dict in self.train_dataloader:
@@ -303,7 +301,15 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                             gen_batch_output = self.actor_rollout_wg.generate_sequences(gen_batch)
                         else:
                             self.async_rollout_manager.wake_up()
-                            gen_batch_output = self.explorer_manager.rollout(gen_batch)
+                            # gen_batch_output = self.explorer_manager.rollout(gen_batch)
+                            tasks = [Task(
+                                        task_id=gen_batch.non_tensor_batch["extras"][i]["task_id"], 
+                                        query=gen_batch.non_tensor_batch["raw_prompt"][i],
+                                        env_type=self.config.beyond_agent.env_type
+                                    ) for i in range(len(gen_batch))]
+                            trajectories = self.explorer_manager.rollout(tasks, mode="sample")
+                            gen_batch_output = self.explorer_manager.to_dataproto(trajectories)
+
                             # gen_batch_output = self.async_rollout_manager.generate_sequences(gen_batch)
                             self.async_rollout_manager.sleep()
 
@@ -437,9 +443,7 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                             num_repeat=self.config.actor_rollout_ref.rollout.n,
                             norm_adv_by_std_in_grpo=norm_adv_by_std_in_grpo,
                             multi_turn=self.config.actor_rollout_ref.rollout.multi_turn.enable,
-                            use_pf_ppo=self.config.algorithm.use_pf_ppo,
-                            pf_ppo_reweight_method=self.config.algorithm.pf_ppo.reweight_method,
-                            pf_ppo_weight_pow=self.config.algorithm.pf_ppo.weight_pow,
+                            config=self.config.algorithm,
                         )
 
                     # update critic

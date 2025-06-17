@@ -3,9 +3,9 @@ git clone --recurse-submodules git@gitlab.alibaba-inc.com:EconML/BeyondAgent.git
 ```
 
 
-# Explorer Dataflow Rollout Example (GSM8K) for BeyondAgent
+# BeyondAgent
 
-This example demonstrates how to perform **dataflow rollout** using ParallelEnvManager with AsyncLLMServerManager of multipe model server (e.g., Qwen2.5-3B) on the GSM8K dataset.
+This example demonstrates how to perform agent training for a given environment, e.g. appworld.
 
 ### 这种实现方式：
 
@@ -16,27 +16,20 @@ This example demonstrates how to perform **dataflow rollout** using ParallelEnvM
 
 ## Usage
 
-### Step 1: Download GSM8K Dataset
+### Step 1: Install & Run EnvService
 
 ```bash
-cd examples/data_preprocess
-python3 gsm8k_multiturn_w_tool.py
+cd envservice
+python3 -m env.env_service
 ```
 
-This will download and preprocess the GSM8K dataset into ~/data/gsm8k/.
-
-### Step 2: Run Multi-Turn Rollout
+### Step 2: Run BeyondAgent Training
 
 If you have 2 GPUs
 Use the standard 2-GPU script:
 
 ```bash
 cd your_verl_root_dir
-bash recipe/beyond_agent/run_qwen2.5-3b_dataflow_2gpu.sh
+bash examples/run_qwen2.5-3b_dataflow_2gpu.sh
 ```
 
-## Notes
-
-- The rollout supports multi-turn conversations with tool-calling capabilities.
-- Current tools are used for GSM8K answer evaluation.
-- Future versions may extend to search and code interpreter tools.
