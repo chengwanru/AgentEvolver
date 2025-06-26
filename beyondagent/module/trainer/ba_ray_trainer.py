@@ -488,9 +488,6 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
 
         for epoch in range(self.config.trainer.total_epochs):
             for i, batch_dict in enumerate(self.train_dataloader):
-                if i > 0:
-                    continue
-
                 metrics = {}
                 timing_raw = {}
                 batch: DataProto = DataProto.from_single_dict(batch_dict)
