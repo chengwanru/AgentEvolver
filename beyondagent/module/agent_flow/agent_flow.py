@@ -51,7 +51,11 @@ class AgentFlow(BaseAgentFlow):
 
             # callback llm server, messages.size=1
             t_start = time.time()
-            llm_output = self.llm_chat_fn(trajectory.steps, request_id=request_id)
+            try:
+                llm_output = self.llm_chat_fn(trajectory.steps, request_id=request_id)
+            except Exception as e:
+                logger.error(f"llm_output={llm_output}")
+                break
             time_cost = round(time.time() - t_start, 2)
             new_request_id = llm_output.pop("request_id", None)
             logger.info(f"act_step={act_step} "
@@ -62,8 +66,12 @@ class AgentFlow(BaseAgentFlow):
             request_id = new_request_id
 
             trajectory.steps.append(llm_output)
-
-            env_output = env.step(instance_id, llm_output)
+            
+            try:
+                env_output = env.step(instance_id, llm_output)
+            except Exception as e:
+                logger.error(f"env_output={env_output}")
+                break
             # convert role_tool to role_user message
             # breakpoint()
             
