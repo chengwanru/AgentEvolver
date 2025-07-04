@@ -89,10 +89,19 @@ apis.supervisor.complete_task(answer=answer)
 def _get_action_observation_pair(traj:Trajectory)->list[tuple[str,str]]:
     res=[]
     for idx,step in enumerate(traj.steps):
-        # TODO: 我们并不能确定来自环境的交互结果到底是 user message 还是 tool results
-        if step['role'] == 'assistant' and (idx+1<len(traj.steps) and traj.steps[idx+1]['role'] in ['tool','user']):
-            # FIXME: extract action from content and use it
-            res.append((step['content'],traj.steps[idx+1]['content']))
+        assert 'role' in step, "steps must have role field"
+        if step['role']=='assistant' and idx+1<len(traj.steps):
+            next_step=traj.steps[idx+1]
+            # As there is no standard for environments, we do not know whether it will response as user or tool.
+            if next_step['role']=='tool':
+                # get observation from tool message
+                observation=next_step['content']
+            elif next_step['role']=='user':
+                # get observation from user message
+                observation=next_step['content']
+            else:
+                continue
+            res.append((step['content'],observation))
     
     return res
 
@@ -104,23 +113,25 @@ def get_task_summarize_prompt(trajectories:Sequence[Trajectory],len_history:int=
         pairs=_get_action_observation_pair(traj)
         for k,v in enumerate(pairs):
             histories=pairs[max(0,k-len_history):k]
-            # TODO: do we need reward? FIXME: reward 从哪来的？探索阶段有 query 吗？
-            x+=f"""
-Record {idx}:
-    History: {" -> ".join([f"{_[0]}->{_[1]}" for _ in histories])}
-    Action: {v[0]}
-    Observation: {v[1]}
-    Reward: unknown
-"""
+            x+=f"## Record {idx}\n"
+            x+=f"### History\n"
+            for history in histories:
+                x+=f"{history[0]}\n->\n{history[1]}\n\n"
+            x+=f"### Action\n{v[0]}\n"
+            x+=f"### Observation\n{v[1]}\n"
+            x+=f"### Reward: {traj.reward.outcome}\n{traj.reward.description}\n"
             idx+=1
     
     user_prompt=f"""Please analyze the following agent interaction sequence and abstract specific tasks from it:
 
 {x}
 
+# Now Start
+
 Please identify the specific tasks the agent is attempting to complete in these interactions, and abstract them into clear task descriptions and queries following the specified format.
 """
     return AGENT_SUMMARIZE_SYSTEM_PROMPT,user_prompt
+
 
 def parse_tasks_from_response(response: str) -> list:
     """从响应中解析任务列表"""
