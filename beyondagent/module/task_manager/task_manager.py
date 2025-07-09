@@ -18,7 +18,7 @@ from typing import (
 import hydra
 from loguru import logger
 from omegaconf import DictConfig
-from torch.utils.data import IterableDataset
+from torch.utils.data import IterableDataset,Dataset
 from tqdm import tqdm
 from beyondagent.client.llm_client import DashScopeClient
 from beyondagent.module.agent_flow.agent_flow import AgentFlow
@@ -103,9 +103,9 @@ class TaskManager(object):
 
         return res
 
-    def get_dataset(self, tasks: Iterable[Task], bs: int, tokenizer, config):
+    def get_onthefly_dataset(self, tasks: Iterable[Task], bs: int, tokenizer, config,processor):
         """
-        Get dataset.
+        Get dataset on the fly.
 
         Args:
             tasks: Iterable[Task]
@@ -113,66 +113,21 @@ class TaskManager(object):
             tokenizer: transformers.tokenization_utils.PreTrainedTokenizer
             config: DictConfig. Only for RLHFDataset.
         """
-        fa = self
-        
-        lock=threading.Lock()
 
-        # wrapper for data auto-reloading
-        class AutoReloadDataset(IterableDataset):
-            def __init__(self, bs: int):
-                self._bs = bs
-
-                self._dataset = OnflyRlDataset(release_used_dataset=True)
-            
-            def reload(self):
-                # avoid data loader calling reload multiple times
-                with lock:
-                    logger.debug('reloading...') # this should only happen once
-                    # avoid data loader calling reload multiple times
-                    if self._dataset.num_rest_data > 0:
-                        return self._dataset.num_rest_data
-
-                    delta = []
-                    for task in tasks:
-                        delta.append(task)
-                        if len(delta) == self._bs:
-                            break
-
-                    ls = fa.generate_task(delta)
-                    while len(ls) < self._bs * fa._n:
-                        logger.debug("failed to generate enough tasks, retrying")
-                        ls = fa.generate_task(delta)
-
-                    self._dataset.append_dataset(to_rl_dataset(ls, tokenizer, config))
-                    return self._dataset.num_rest_data
-
-            def __iter__(self):
-                return self
-
-            def __next__(self):
-                if self._dataset.num_rest_data == 0:
-                    logger.debug("no data left")
-                    if self.reload() == 0:
-                        logger.debug("no task left, stop reloading and iteration")
-                        raise StopIteration
-                return next(self._dataset)
-
-        return AutoReloadDataset(bs)
+        return AutoReloadDataset(self,tasks,bs,tokenizer=tokenizer,config=config,processor=processor)
     
-    def load_persistent_dataset(self,tasks:Sequence[Task],filepath:str,*,config,tokenizer,processor)->RLHFDataset:
-        """保持任务探索结果不变的数据集。探索一次后保存到文件，后续再加载。
-        """
-        if not os.path.exists(filepath):
-            logger.info("no persistent file, exploring tasks. this will take a while...")
-            objectives=self.generate_task(tasks[:1],show_progress=True) # FIXME: debug
-            with open(filepath,"w") as f:
-                    f.writelines([ob.json() for ob in objectives])
+    def get_or_load_full_dataset(self,tasks:Sequence[Task],filepath:Optional[str],*,config,tokenizer,processor)->"FullDataset":
+        """Get the full dataset, or load from file.
+        """     
+        dataset=FullDataset(self,tasks,tokenizer=tokenizer,config=config,processor=processor)
+        if filepath is not None and os.path.exists(filepath):
+            dataset.load_from_file(filepath)
         else:
-            logger.info("loading persistent file...")
-            with open(filepath,"r") as f:
-                objectives=[TaskObjective.parse_raw(line) for line in f.readlines()]
+            dataset.reload()
+            if filepath is not None:
+                dataset.save_to_file(filepath)
         
-        return adapter.to_rl_dataset(objectives,tokenizer=tokenizer,config=config,processor=processor)
+        return dataset        
     
 
     def _step_explore_batch(self, tasks: Sequence[Task]):
@@ -300,3 +255,77 @@ class TaskManager(object):
             }
 
         return llm_chat
+
+
+class FullDataset(Dataset):
+    """FullDataset
+    """
+    
+    def __init__(self,manager:TaskManager, tasks:Sequence[Task],*,tokenizer,config, processor):
+        self._manager=manager
+        self._tasks=list(tasks)
+        self._tokenizer = tokenizer
+        self._config=config
+        self._processor=processor
+    
+    def save_to_file(self,filepath:str):
+        with open(filepath,"w") as f:
+            f.writelines([ob.json() for ob in self._objectives])
+    
+    def load_from_file(self,filepath:str):
+        with open(filepath,"r") as f:
+            self._objectives=[TaskObjective.parse_raw(line) for line in f.readlines()]
+        self._dataset = to_rl_dataset(self._objectives, self._tokenizer, self._config,self._processor)
+    
+    def reload(self):
+        self._objectives=self._manager.generate_task(self._tasks,show_progress=True)
+        self._dataset = to_rl_dataset(self._objectives, self._tokenizer, self._config,self._processor)
+    
+    def __getitem__(self, index):
+        return self._dataset[index]
+    
+    def __len__(self):
+        return len(self._dataset)
+
+
+# wrapper for data auto-reloading
+class AutoReloadDataset(IterableDataset):
+    """AytoReloadDataset
+    
+    the number of workers of DataLoader must be 1.
+    """
+    def __init__(self,manager:TaskManager, tasks:Iterable[Task], bs: int, *, tokenizer, config, processor):
+        self._manager=manager
+        self._tasks=tasks
+        self._bs = bs
+        self._tokenizer = tokenizer
+        self._config=config
+        self._processor = processor
+        
+        self._dataset = OnflyRlDataset(release_used_dataset=True)
+    
+    def reload(self):
+        delta = []
+        for task in self._tasks:
+            delta.append(task)
+            if len(delta) == self._bs:
+                break
+
+        ls = self._manager.generate_task(delta)
+        while len(ls) < self._bs * self._manager._n:
+            logger.debug("failed to generate enough tasks, retrying")
+            ls = self._manager.generate_task(delta)
+
+        self._dataset.append_dataset(to_rl_dataset(ls, self._tokenizer, self._config,self._processor))
+        return self._dataset.num_rest_data
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._dataset.num_rest_data == 0:
+            logger.debug("no data left")
+            if self.reload() == 0:
+                logger.debug("no task left, stop reloading and iteration")
+                raise StopIteration
+        return next(self._dataset)
