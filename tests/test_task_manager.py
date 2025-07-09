@@ -8,7 +8,7 @@ from beyondagent.schema.task import Task
 
 
 @hydra.main(
-    config_path="../../../config",
+    config_path="../config",
     config_name="beyond_agent_dataflow",
     version_base=None,
 )
@@ -33,8 +33,8 @@ def test(config):
         n=1,
     )
     task = Task(task_id="0a9d82a_1", env_type="appworld")
-    tasks = [task] * 100
-    dataset = manager.get_dataset(iter(tasks), bs=2, tokenizer=tokenizer, config=config)
+    tasks = [task] * 2
+    dataset = manager.get_or_load_full_dataset(tasks,'test.json',config=config.data,tokenizer=tokenizer,processor=None)
     dataloader = DataLoader(
         dataset, batch_size=2, shuffle=False, collate_fn=default_collate_fn
     )

@@ -86,23 +86,6 @@ class TaskManager(object):
     def register_filter(self, filter: TaskPostFilter):
         self._filters.append(filter)
 
-    def generate_task(self, tasks: Sequence[Task],*,show_progress=False) -> list[TaskObjective]:
-        task_q = list(copy.copy(tasks)) * self._n
-        res = []
-        # 每次最多探索所有不同任务，或者最大线程个任务，防止同批次中生成相同任务
-        parallel_num = min(self._num_exploration_threads, len(tasks))
-        for i in tqdm(range(0, len(task_q), parallel_num), disable=not show_progress):
-            trajectories = self._step_explore_batch(task_q[i : i + parallel_num])
-            task_objectives = self._step_summarize_batch(
-                task_q[i : i + parallel_num], trajectories
-            )
-            res.extend(task_objectives)
-
-        # post filter
-        res = functools.reduce(lambda x, f: f.filter(x), self._filters, res)
-
-        return res
-
     def get_onthefly_dataset(self, tasks: Iterable[Task], bs: int, tokenizer, config,processor):
         """
         Get dataset on the fly.
@@ -127,18 +110,38 @@ class TaskManager(object):
             if filepath is not None:
                 dataset.save_to_file(filepath)
         
-        return dataset        
+        return dataset
     
+    
+    def generate_task(self, tasks: Sequence[Task],*,show_progress=False) -> list[TaskObjective]:
+        task_q = list(copy.copy(tasks)) * self._n
+        res = []
+        # 每次最多探索所有不同任务，或者最大线程个任务，防止同批次中生成相同任务
+        parallel_num = min(self._num_exploration_threads, len(tasks))
+        with ThreadPoolExecutor(max_workers=self._num_exploration_threads) as pool:
+            for i in tqdm(range(0, len(task_q), parallel_num), disable=not show_progress):
+                futures = [
+                    pool.submit(self._exlore_and_summarize, task, data_id, rollout_id)
+                    for task, data_id, rollout_id in zip(
+                        task_q[i : i + parallel_num],
+                        ["unknown"] * parallel_num,
+                        ["unknown"] * parallel_num,
+                    )
+                ]
+                task_objectives = sum([future.result() for future in futures], [])
+                res.extend(task_objectives)
 
-    def _step_explore_batch(self, tasks: Sequence[Task]):
-        with ThreadPoolExecutor(max_workers=self._num_exploration_threads) as executor:
-            # TODO: I have no idea what data_id and rollout_id are.
-            futures = [
-                executor.submit(self._step_explore, task, "unknown data_id", "unknown rollout_id")
-                for task in tasks
-            ]
-            results = [future.result() for future in futures]
-            return results
+        # post filter
+        res = functools.reduce(lambda x, f: f.filter(x), self._filters, res)
+
+        return res
+
+    
+    def _exlore_and_summarize(self,task:Task,data_id:str,rollout_id:str):
+        trajectory=self._step_explore(task,data_id,rollout_id)
+        task_objectives=self._step_summarize(task,trajectory)
+        return task_objectives
+
 
     def _step_explore(self, task: Task, data_id: str, rollout_id: str):
         """
@@ -177,22 +180,6 @@ class TaskManager(object):
 
         return traj
 
-    def _step_summarize_batch(
-        self, tasks: Sequence[Task], trajectories: Sequence[Trajectory]
-    ) -> list[TaskObjective]:
-        with ThreadPoolExecutor(max_workers=self._num_exploration_threads) as executor:
-            futures = [
-                executor.submit(self._step_summarize, task, traj)
-                for task, traj in zip(tasks, trajectories)
-            ]
-            results = [future.result() for future in futures]
-            results = sum(results, [])
-
-            # append to old retrival, to avoid duplicate exploration next time.
-            for r in results:
-                self._old_retrival.add_objective(r)
-
-            return results
 
     def _step_summarize(
         self, task: Task, trajectory: Trajectory
@@ -270,11 +257,11 @@ class FullDataset(Dataset):
     
     def save_to_file(self,filepath:str):
         with open(filepath,"w") as f:
-            f.writelines([ob.json() for ob in self._objectives])
+            f.writelines([ob.json()+"\n" for ob in self._objectives])
     
     def load_from_file(self,filepath:str):
         with open(filepath,"r") as f:
-            self._objectives=[TaskObjective.parse_raw(line) for line in f.readlines()]
+            self._objectives=[TaskObjective.parse_raw(line) for line in filter(lambda x: x.strip()!="", f.readlines())]
         self._dataset = to_rl_dataset(self._objectives, self._tokenizer, self._config,self._processor)
     
     def reload(self):
