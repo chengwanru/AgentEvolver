@@ -54,7 +54,7 @@ class TaskManagerProps(TypedDict):
     
     task_summary_history_length: NotRequired[int]
     
-    use_original_tasks: NotRequired[bool]
+    mix_original_tasks: NotRequired[bool]
 
 
 # TODO: 针对不同环境的统一接口，message-in message-out？那可能不需要这个
@@ -91,7 +91,7 @@ class TaskManager(object):
 
         # 混合原有数据和生成数据
         # TODO: a better mixture strategy is possible
-        self._use_original_tasks = kwargs.get("use_original_tasks", False)
+        self._mix_original_tasks = kwargs.get("mix_original_tasks", False)
 
         self._filters: list[TaskPostFilter] = []
         
@@ -131,12 +131,12 @@ class TaskManager(object):
             config: DictConfig. Only for RLHFDataset.
         """
 
-        return AutoReloadDataset(self,iter(self._tasks),bs,self._use_original_tasks,tokenizer=tokenizer,config=config,processor=processor)
+        return AutoReloadDataset(self,iter(self._tasks),bs,self._mix_original_tasks,tokenizer=tokenizer,config=config,processor=processor)
     
     def get_or_load_full_dataset(self,filepath:Optional[str],*,config,tokenizer,processor)->"FullDataset":
         """Get the full dataset, or load from file.
         """     
-        dataset=FullDataset(self,self._tasks,self._use_original_tasks,tokenizer=tokenizer,config=config,processor=processor)
+        dataset=FullDataset(self,self._tasks,self._mix_original_tasks,tokenizer=tokenizer,config=config,processor=processor)
         if filepath is not None and os.path.exists(filepath):
             logger.info(f"loading full dataset from {filepath}")
             dataset.load_from_file(filepath)

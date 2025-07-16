@@ -195,7 +195,7 @@ class TaskRunner:
             num_explore_threads=config.task_manager.num_explore_threads,
             n=config.task_manager.n,
             task_summary_history_length=config.task_manager.task_summary_history_length,
-            use_original_tasks=config.task_manager.use_original_tasks
+            mix_original_tasks=config.task_manager.mix_original_tasks
         )
         val_task_manager=TaskManager(
             config=config,
@@ -208,7 +208,7 @@ class TaskRunner:
             num_explore_threads=config.task_manager.num_explore_threads,
             n=config.task_manager.n,
             task_summary_history_length=config.task_manager.task_summary_history_length,
-            use_original_tasks=config.task_manager.use_original_tasks
+            mix_original_tasks=config.task_manager.mix_original_tasks
         )
         trainer = BeyondAgentRayPPOTrainer(
             config=config,
