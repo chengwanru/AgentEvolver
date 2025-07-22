@@ -53,7 +53,7 @@ python3 -m beyondagent.main_ppo \
     algorithm.use_kl_in_reward=False \
     trainer.n_gpus_per_node=1 \
     trainer.critic_warmup=0 \
-    trainer.logger=['console','wandb'] \
+    trainer.logger=['console','swanlab'] \
     trainer.project_name='ba-taskmanager' \
     trainer.experiment_name='qwen25_3b-taskmanager-debug' \
     trainer.nnodes=1 \
