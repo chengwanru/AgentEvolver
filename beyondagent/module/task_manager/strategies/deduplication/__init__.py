@@ -6,8 +6,8 @@ from loguru import logger
 
 from beyondagent.module.agent_flow.base_agent_flow import BaseAgentFlow
 from beyondagent.module.task_manager.explorer import EnvWorkerWithPrompt
-from beyondagent.module.task_manager.strategies.random.prompts.prompt_explore import get_agent_interaction_system_prompt
-from beyondagent.module.task_manager.strategies.random.prompts.prompt_summarize import (
+from beyondagent.module.task_manager.strategies.common.prompts.prompt_explore import get_agent_interaction_system_prompt
+from beyondagent.module.task_manager.strategies.common.prompts.prompt_summarize import (
     get_task_summarize_prompt,
     parse_tasks_from_response,
 )
@@ -75,12 +75,10 @@ class LlmDedupSamplingExploreStrategy(TaskExploreStrategy):
         )
         agent_flow.max_steps = self._max_explore_step  # this is ugly
 
-        old_objectives = self.old_retrival.retrieve_objectives(task)
-
         traj = env_worker.execute(
             data_id=data_id,
             rollout_id=rollout_id,
-            system_prompt=get_agent_interaction_system_prompt(task, old_objectives),
+            system_prompt=get_agent_interaction_system_prompt(task),
             agent_flow=agent_flow,
         )
 

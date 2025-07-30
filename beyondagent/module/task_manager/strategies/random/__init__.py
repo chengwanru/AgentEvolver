@@ -8,7 +8,7 @@ from beyondagent.module.agent_flow.base_agent_flow import BaseAgentFlow
 from beyondagent.module.task_manager.agent_flow import ModifiedAgentFlow
 from beyondagent.module.task_manager.explorer import EnvWorkerWithPrompt
 from beyondagent.module.task_manager.strategies.random.prompts.prompt_explore import get_agent_interaction_system_prompt
-from beyondagent.module.task_manager.strategies.random.prompts.prompt_summarize import (
+from beyondagent.module.task_manager.strategies.common.prompts.prompt_summarize import (
     get_task_summarize_prompt,
     parse_tasks_from_response,
 )
