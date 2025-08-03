@@ -1,298 +1,225 @@
-import traceback
-# 健壮的 advantage normalization 实现
-def safe_advantage_normalization(batch, config, metrics):
+"""
+Advantage Normalization Module
+优势归一化模块 - 支持三种归一化策略
+"""
+
+import torch
+from typing import Dict, Any, Tuple, Optional
+from dataclasses import dataclass
+
+
+@dataclass
+class AdvNormConfig:
+    """优势归一化配置"""
+    enable: bool = True
+    level: str = "batch"  # "batch" | "group"
+    group_size: Optional[int] = None
+    normalization_type: str = "with_std"  # "with_std" | "no_std" | "batch_std"
+
+
+def normalize_advantages(
+    advantages: torch.Tensor,
+    mask: torch.Tensor,
+    config: AdvNormConfig,
+    rollout_n: int = 8
+) -> Tuple[torch.Tensor, Dict[str, Any]]:
     """
-    安全的advantage normalization，确保在任何情况下都不会出错
+    对优势进行归一化处理
     
     Args:
-        batch: 批次数据
-        config: 配置对象
-        metrics: 指标字典
+        advantages: 优势张量 (bs, seq_len)
+        mask: 有效token的mask (bs, seq_len)
+        config: 归一化配置
+        rollout_n: rollout重复次数，用于group模式的默认group_size
+    
+    Returns:
+        normalized_advantages: 归一化后的优势张量
+        stats: 统计信息字典
     """
-    try:
-        norm_root = getattr(config, "semantic_advantage", None)
-        adv_norm_cfg = getattr(norm_root, "adv_norm", None) if norm_root else None
-
-        # 早期退出条件
-        if not adv_norm_cfg or not getattr(adv_norm_cfg, "enable", True):
-            return  # 不做任何处理
+    if not config.enable:
+        return advantages, {}
+    
+    device = advantages.device
+    bs, seq_len = advantages.shape
+    
+    # 只对非零且有效的token进行归一化
+    nonzero_mask = mask.bool() & (advantages != 0)
+    norm_adv = advantages.clone()
+    
+    # 统计信息
+    stats = {
+        "level": config.level,
+        "normalization_type": config.normalization_type,
+        "tokens_normed": 0,
+        "groups": 0,
+        "zero_groups": 0,
+        "median_mean": 0.0,
+        "std_mean": 0.0,
+    }
+    
+    if config.level == "batch":
+        norm_adv, batch_stats = _normalize_batch_level(
+            advantages, norm_adv, nonzero_mask, config.normalization_type
+        )
+        stats.update(batch_stats)
         
-        if "advantages" not in batch.batch:
-            print("[WARNING] No advantages found in batch, skipping normalization")
-            return
-
-        level = getattr(adv_norm_cfg, "level", "batch")
-        group_size = getattr(adv_norm_cfg, "group_size", None)
-        use_mask_type = getattr(norm_root, "mask_type", "loss_mask")
-
-        with torch.no_grad():
-            adv = batch.batch["advantages"]
-            
-            # 基本健全性检查
-            if adv.numel() == 0:
-                print("[WARNING] Empty advantages tensor, skipping normalization")
-                return
-                
-            if adv.dim() != 2:
-                print(f"[WARNING] Unexpected advantages shape {adv.shape}, expected 2D tensor")
-                return
-                
-            bs, resp_len = adv.shape
-            
-            if bs == 0 or resp_len == 0:
-                print(f"[WARNING] Invalid batch dimensions bs={bs}, resp_len={resp_len}")
-                return
-
-            # 安全获取mask
-            mask_all = None
-            
-            try:
-                if use_mask_type == "loss_mask" and "loss_mask" in batch.batch:
-                    loss_mask = batch.batch["loss_mask"]
-                    
-                    # 确保loss_mask是2D的
-                    if loss_mask.dim() != 2:
-                        print(f"[WARNING] loss_mask has unexpected shape {loss_mask.shape}")
-                        mask_all = batch.batch.get("response_mask", torch.ones_like(adv)).bool()
-                    else:
-                        # 安全的切片操作
-                        if loss_mask.shape[0] != bs:
-                            print(f"[WARNING] loss_mask batch size mismatch: {loss_mask.shape[0]} vs {bs}")
-                            mask_all = batch.batch.get("response_mask", torch.ones_like(adv)).bool()
-                        elif loss_mask.shape[1] >= resp_len:
-                            mask_all = loss_mask[:, -resp_len:].bool()
-                        else:
-                            # loss_mask太短，用零填充
-                            print(f"[WARNING] loss_mask too short ({loss_mask.shape[1]} < {resp_len}), padding with zeros")
-                            padding_size = resp_len - loss_mask.shape[1]
-                            padding = torch.zeros(bs, padding_size, dtype=loss_mask.dtype, device=loss_mask.device)
-                            padded_mask = torch.cat([padding, loss_mask], dim=1)
-                            mask_all = padded_mask.bool()
-                else:
-                    # fallback到response_mask
-                    if "response_mask" in batch.batch:
-                        response_mask = batch.batch["response_mask"]
-                        if response_mask.shape == adv.shape:
-                            mask_all = response_mask.bool()
-                        else:
-                            print(f"[WARNING] response_mask shape mismatch: {response_mask.shape} vs {adv.shape}")
-                            mask_all = torch.ones_like(adv).bool()
-                    else:
-                        print("[WARNING] No valid mask found, using all ones")
-                        mask_all = torch.ones_like(adv).bool()
-                        
-            except Exception as e:
-                print(f"[ERROR] Failed to get mask: {e}, using all ones")
-                mask_all = torch.ones_like(adv).bool()
-
-            # 确保mask形状正确
-            if mask_all.shape != adv.shape:
-                print(f"[WARNING] Mask shape mismatch: {mask_all.shape} vs {adv.shape}, using all ones")
-                mask_all = torch.ones_like(adv).bool()
-
-            # 检查是否有有效tokens
-            valid_token_count = mask_all.sum().item()
-            if valid_token_count == 0:
-                print("[WARNING] No valid tokens found, skipping normalization")
-                _record_default_metrics(metrics, level, 0)
-                return
-
-            # 安全的normalization
-            norm_adv = adv.clone()
-            
-            if level == "batch":
-                success = _safe_batch_normalization(adv, mask_all, norm_adv, metrics, level)
-            elif level == "group":
-                if group_size is None:
-                    group_size = getattr(config.actor_rollout_ref.rollout, "n", 1)
-                success = _safe_group_normalization(adv, mask_all, norm_adv, metrics, level, group_size, bs)
-            else:
-                print(f"[ERROR] Unknown normalization level: {level}")
-                return
-
-            if success:
-                # 最终安全检查
-                if torch.isnan(norm_adv).any() or torch.isinf(norm_adv).any():
-                    print("[ERROR] NaN/Inf detected in normalized advantages, reverting to original")
-                    _record_default_metrics(metrics, level, valid_token_count)
-                else:
-                    # 安全更新
-                    batch.batch["advantages"] = norm_adv
-                    print(f"[INFO] Advantage normalization successful: {valid_token_count} tokens processed")
-            else:
-                _record_default_metrics(metrics, level, valid_token_count)
-
-    except Exception as e:
-        print(f"[ERROR] Exception in advantage normalization: {e}")
-        print(f"[ERROR] Traceback: {traceback.format_exc()}")
-        # 确保不影响训练继续
-        _record_default_metrics(metrics, getattr(adv_norm_cfg, "level", "batch"), 0)
-
-
-def _safe_batch_normalization(adv, mask_all, norm_adv, metrics, level):
-    """安全的batch级别normalization"""
-    try:
-        valid_adv = adv[mask_all]
+    elif config.level == "group":
+        group_size = config.group_size or rollout_n
+        norm_adv, group_stats = _normalize_group_level(
+            advantages, norm_adv, nonzero_mask, group_size, config.normalization_type, device
+        )
+        stats.update(group_stats)
         
-        if valid_adv.numel() == 0:
-            print("[WARNING] No valid advantages for batch normalization")
-            return False
-            
-        # 使用更稳定的统计量计算
-        if valid_adv.numel() == 1:
-            med = valid_adv[0]
+    else:
+        raise ValueError(f"Unknown level: {config.level}")
+    
+    # 计算归一化后的统计信息
+    final_stats = _compute_final_stats(norm_adv, mask)
+    stats.update(final_stats)
+    
+    return norm_adv, stats
+
+
+def _normalize_batch_level(
+    advantages: torch.Tensor,
+    norm_adv: torch.Tensor,
+    nonzero_mask: torch.Tensor,
+    normalization_type: str
+) -> Tuple[torch.Tensor, Dict[str, Any]]:
+    """批次级别归一化"""
+    nz_adv = advantages[nonzero_mask]
+    
+    if nz_adv.numel() > 0:
+        med = torch.median(nz_adv)
+        std = nz_adv.std(unbiased=False).clamp_min(1e-8)
+        
+        # 应用归一化
+        if normalization_type == "with_std":
+            norm_adv[nonzero_mask] = (advantages[nonzero_mask] - med) / std
+        elif normalization_type == "no_std":
+            norm_adv[nonzero_mask] = advantages[nonzero_mask] - med
+        elif normalization_type == "batch_std":
+            # 在batch模式下，batch_std等同于with_std
+            norm_adv[nonzero_mask] = (advantages[nonzero_mask] - med) / std
         else:
-            med = torch.median(valid_adv)
-            
-        # 检查median是否有效
-        if torch.isnan(med) or torch.isinf(med):
-            print(f"[WARNING] Invalid median value: {med}")
-            return False
-            
-        # 应用normalization
-        norm_adv[mask_all] = adv[mask_all] - med
-        
-        # 记录指标
-        tokens_normed = int(mask_all.sum().item())
-        _record_batch_metrics(metrics, norm_adv, mask_all, med.item(), tokens_normed)
-        
-        return True
-        
-    except Exception as e:
-        print(f"[ERROR] Batch normalization failed: {e}")
-        return False
+            raise ValueError(f"Unknown normalization_type: {normalization_type}")
+    else:
+        med = torch.tensor(0.0, device=advantages.device)
+        std = torch.tensor(1.0, device=advantages.device)
+    
+    return norm_adv, {
+        "groups": 1,
+        "tokens_normed": int(nonzero_mask.sum().item()),
+        "median_mean": float(med),
+        "std_mean": float(std),
+        "zero_groups": 0,
+    }
 
 
-def _safe_group_normalization(adv, mask_all, norm_adv, metrics, level, group_size, bs):
-    """安全的group级别normalization"""
-    try:
-        device = adv.device
-        group_ids = torch.arange(bs, device=device) // group_size
-        unique_groups = group_ids.unique()
+def _normalize_group_level(
+    advantages: torch.Tensor,
+    norm_adv: torch.Tensor,
+    nonzero_mask: torch.Tensor,
+    group_size: int,
+    normalization_type: str,
+    device: torch.device
+) -> Tuple[torch.Tensor, Dict[str, Any]]:
+    """组级别归一化"""
+    bs = advantages.shape[0]
+    group_ids = torch.arange(bs, device=device) // group_size
+    
+    tokens_normed = 0
+    med_list, std_list = [], []
+    zero_groups = 0
+    
+    # 如果是batch_std模式，预先计算全局统计量
+    global_std = None
+    if normalization_type == "batch_std":
+        nz_adv_global = advantages[nonzero_mask]
+        if nz_adv_global.numel() > 0:
+            global_std = nz_adv_global.std(unbiased=False).clamp_min(1e-8)
+    
+    # 按组处理
+    for gid in group_ids.unique():
+        g_sample_mask = (group_ids == gid).unsqueeze(1)
+        g_mask = g_sample_mask & nonzero_mask
         
-        tokens_normed = 0
-        med_list = []
-        successful_groups = 0
+        if not g_mask.any():
+            continue
         
-        for gid in unique_groups:
-            try:
-                g_mask_sample = (group_ids == gid).unsqueeze(1)
-                g_mask = g_mask_sample & mask_all
-                
-                if not g_mask.any():
-                    continue
-                    
-                g_adv = adv[g_mask]
-                if g_adv.numel() == 0:
-                    continue
-                    
-                # 计算group median
-                if g_adv.numel() == 1:
-                    g_med = g_adv[0]
-                else:
-                    g_med = torch.median(g_adv)
-                    
-                if torch.isnan(g_med) or torch.isinf(g_med):
-                    print(f"[WARNING] Invalid median for group {gid}: {g_med}")
-                    continue
-                    
-                # 应用normalization
-                norm_adv[g_mask] = adv[g_mask] - g_med
-                
-                med_list.append(g_med)
-                tokens_normed += int(g_adv.numel())
-                successful_groups += 1
-                
-            except Exception as e:
-                print(f"[WARNING] Failed to process group {gid}: {e}")
+        g_adv = advantages[g_mask]
+        med = torch.median(g_adv)
+        std = g_adv.std(unbiased=False)
+        
+        # 应用归一化
+        if normalization_type == "with_std":
+            # 使用组内std
+            if std <= 1e-8:
+                zero_groups += 1
                 continue
-        
-        if successful_groups == 0:
-            print("[WARNING] No groups successfully processed")
-            return False
+            norm_adv[g_mask] = (advantages[g_mask] - med) / std
             
-        # 记录指标
-        med_mean = torch.stack(med_list).mean().item() if med_list else 0.0
-        _record_group_metrics(metrics, norm_adv, mask_all, med_mean, tokens_normed, 
-                            len(unique_groups), successful_groups)
+        elif normalization_type == "no_std":
+            # 只减组内中位数
+            norm_adv[g_mask] = advantages[g_mask] - med
+            
+        elif normalization_type == "batch_std":
+            # 使用全局std，组内median
+            if global_std is None or global_std <= 1e-8:
+                norm_adv[g_mask] = advantages[g_mask] - med  # fallback
+            else:
+                norm_adv[g_mask] = (advantages[g_mask] - med) / global_std
+        else:
+            raise ValueError(f"Unknown normalization_type: {normalization_type}")
         
-        return True
-        
-    except Exception as e:
-        print(f"[ERROR] Group normalization failed: {e}")
-        return False
-
-
-def _record_default_metrics(metrics, level, tokens_count):
-    """记录默认指标"""
-    metrics.update({
-        "adv_norm/level": level,
-        "adv_norm/groups": 0,
-        "adv_norm/tokens_normed": tokens_count,
-        "adv_norm/zero_groups": 0,
-        "adv_norm/median_mean": 0.0,
-        "adv_norm/pos_tokens": 0,
-        "adv_norm/neg_tokens": 0,
-        "adv_norm/zero_tokens": tokens_count,
-        "adv_norm/pos_sequences": 0,
-        "adv_norm/neg_sequences": 0,
-        "adv_norm/zero_sequences": 0,
-        "adv_norm/neg_token_ratio": 0.0,
-    })
-
-
-def _record_batch_metrics(metrics, norm_adv, mask_all, med_value, tokens_normed):
-    """记录batch级别指标"""
-    pos_tok = int((norm_adv[mask_all] > 0).sum().item())
-    neg_tok = int((norm_adv[mask_all] < 0).sum().item())
-    zero_tok = int((norm_adv[mask_all] == 0).sum().item())
+        med_list.append(med)
+        std_list.append(std)
+        tokens_normed += int(g_adv.numel())
     
-    seq_sum = (norm_adv * mask_all).sum(dim=1)
-    pos_seq = int((seq_sum > 0).sum().item())
-    neg_seq = int((seq_sum < 0).sum().item())
-    zero_seq = int((seq_sum == 0).sum().item())
+    return norm_adv, {
+        "groups": int(group_ids.unique().numel()),
+        "tokens_normed": tokens_normed,
+        "median_mean": torch.stack(med_list).mean().item() if med_list else 0.0,
+        "std_mean": torch.stack(std_list).mean().item() if std_list else 1.0,
+        "zero_groups": zero_groups,
+    }
+
+
+def _compute_final_stats(norm_adv: torch.Tensor, mask: torch.Tensor) -> Dict[str, Any]:
+    """计算归一化后的最终统计信息"""
+    mask_bool = mask.bool()
     
-    metrics.update({
-        "adv_norm/level": "batch",
-        "adv_norm/groups": 1,
-        "adv_norm/tokens_normed": tokens_normed,
-        "adv_norm/zero_groups": 0,
-        "adv_norm/median_mean": med_value,
-        "adv_norm/pos_tokens": pos_tok,
-        "adv_norm/neg_tokens": neg_tok,
-        "adv_norm/zero_tokens": zero_tok,
-        "adv_norm/pos_sequences": pos_seq,
-        "adv_norm/neg_sequences": neg_seq,
-        "adv_norm/zero_sequences": zero_seq,
-        "adv_norm/neg_token_ratio": neg_tok / max(1, pos_tok + neg_tok),
-    })
-
-
-def _record_group_metrics(metrics, norm_adv, mask_all, med_mean, tokens_normed, 
-                         total_groups, successful_groups):
-    """记录group级别指标"""
-    pos_tok = int((norm_adv[mask_all] > 0).sum().item())
-    neg_tok = int((norm_adv[mask_all] < 0).sum().item())
-    zero_tok = int((norm_adv[mask_all] == 0).sum().item())
+    pos_tokens = int((norm_adv[mask_bool] > 0).sum().item())
+    neg_tokens = int((norm_adv[mask_bool] < 0).sum().item())
+    zero_tokens = int((norm_adv[mask_bool] == 0).sum().item())
     
-    seq_sum = (norm_adv * mask_all).sum(dim=1)
-    pos_seq = int((seq_sum > 0).sum().item())
-    neg_seq = int((seq_sum < 0).sum().item())
-    zero_seq = int((seq_sum == 0).sum().item())
+    seq_sum = (norm_adv * mask_bool).sum(dim=1)
+    pos_sequences = int((seq_sum > 0).sum().item())
+    neg_sequences = int((seq_sum < 0).sum().item())
+    zero_sequences = int((seq_sum == 0).sum().item())
     
-    metrics.update({
-        "adv_norm/level": "group",
-        "adv_norm/groups": total_groups,
-        "adv_norm/tokens_normed": tokens_normed,
-        "adv_norm/zero_groups": total_groups - successful_groups,
-        "adv_norm/median_mean": med_mean,
-        "adv_norm/pos_tokens": pos_tok,
-        "adv_norm/neg_tokens": neg_tok,
-        "adv_norm/zero_tokens": zero_tok,
-        "adv_norm/pos_sequences": pos_seq,
-        "adv_norm/neg_sequences": neg_seq,
-        "adv_norm/zero_sequences": zero_seq,
-        "adv_norm/neg_token_ratio": neg_tok / max(1, pos_tok + neg_tok),
-    })
+    return {
+        "pos_tokens": pos_tokens,
+        "neg_tokens": neg_tokens,
+        "zero_tokens": zero_tokens,
+        "pos_sequences": pos_sequences,
+        "neg_sequences": neg_sequences,
+        "zero_sequences": zero_sequences,
+        "neg_token_ratio": neg_tokens / max(1, pos_tokens + neg_tokens),
+    }
 
 
+def extract_adv_norm_config(config) -> AdvNormConfig:
+    """从主配置中提取advantage normalization配置"""
+    norm_root = getattr(config, "semantic_advantage", None)
+    adv_norm_cfg = getattr(norm_root, "adv_norm", None) if norm_root else None
+    
+    if not adv_norm_cfg:
+        return AdvNormConfig(enable=False)
+    
+    return AdvNormConfig(
+        enable=getattr(adv_norm_cfg, "enable", True),
+        level=getattr(adv_norm_cfg, "level", "batch"),
+        group_size=getattr(adv_norm_cfg, "group_size", None),
+        normalization_type=getattr(adv_norm_cfg, "normalization_type", "with_std"),
+    )
