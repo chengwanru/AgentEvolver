@@ -967,7 +967,7 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                 # collect metrics
                 
                 # add `extras` back to batch, for sperate the original and synthetic data in metric calculation
-                batch = batch.union(DataProto(non_tensor_batch={'extras': batch_extras}))
+                batch.non_tensor_batch['extras']=batch_extras
                 metrics.update(compute_data_metrics(batch=batch, use_critic=self.use_critic))
                 metrics.update(compute_timing_metrics(batch=batch, timing_raw=timing_raw))
                 # TODO: implement actual tflpo and theoretical tflpo
