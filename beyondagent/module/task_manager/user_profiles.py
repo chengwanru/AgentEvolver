@@ -46,7 +46,6 @@ class TaskPreference:
 
     @property
     def relation_difficulty(self) -> str:
-        """Map difficulty level to a descriptive explanation."""
         mapping = {
             1: (
                 "Easy: Involves only one entity or one attribute. "
@@ -64,12 +63,11 @@ class TaskPreference:
                 "Requires reasoning and decision-making."
             )
         }
-        assert 1 <= self._relation_difficulty <= 3
         return mapping[int(self._relation_difficulty)]
 
 
 class UserProfile:
-    """User profile and task instruction generator."""
+    """User profile and task environment description generator."""
     def __init__(self, name: str, background: str, task: TaskPreference):
         self._name = name
         self._background = background
@@ -83,42 +81,36 @@ class UserProfile:
         self._entities.extend(entities)
 
     def get_instruction(self) -> str:
-        """Generate a detailed LLM instruction in English."""
+        """
+        Generate a **pure environment description** in English.
+        This description contains NO role-setting for the LLM,
+        so it can be seamlessly inserted into a larger prompt
+        without causing conflicts.
+        """
         inst_parts = []
 
-        inst_parts.append("# Role and Environment Information")
-
-        # Role definition
-        inst_parts.append("### Role Definition")
+        inst_parts.append("## Environment Overview")
         inst_parts.append(
-            f"You are an intelligent task generation assistant named {self._name}. "
-            f"Your background: {self._background}. "
-            "You can understand the entities, attributes, and available operations in the environment, "
-            "and you are capable of freely exploring the environment: "
-            "try to use API calls to perform operations on the relevant entities."
+            f"- **User Name**: {self._name}\n"
+            f"- **User Background**: {self._background}"
         )
 
-        # Environment entities
-        inst_parts.append("\n### Environment Entities")
+        inst_parts.append("\n## Entities in the Environment")
         for e in self._entities:
-            inst_parts.append(f"- Entity: {e.name} — {e.description}")
+            inst_parts.append(f"### Entity: {e.name}")
+            inst_parts.append(f"- Description: {e.description}")
+            inst_parts.append("- Attributes:")
             for attr_name, attr_desc in e.attrs.items():
-                inst_parts.append(f"  - Attribute: {attr_name} — {attr_desc}")
-            inst_parts.append("  - Available Operations:")
+                inst_parts.append(f"  - **{attr_name}**: {attr_desc}")
+            inst_parts.append("- Available Operations:")
             for opt in e.opts:
-                inst_parts.append(f"    - {opt.name}: {opt.description}")
+                inst_parts.append(f"  - **{opt.name}**: {opt.description}")
+            inst_parts.append("")  # blank line for readability
 
-        # Task preferences
-        inst_parts.append("\n### Task Preferences")
-        inst_parts.append(f"- Average number of entities involved: {self._task_preference.num_entities}")
-        inst_parts.append(f"- Average number of operations involved: {self._task_preference.num_opts}")
-        inst_parts.append(f"- Relation difficulty: {self._task_preference.relation_difficulty}")
-
-        # Task start
-        inst_parts.append("\n### Start Your Work")
-        inst_parts.append(
-            "Now, fully utilize the above information and start exploring the environment. "
-        )
+        inst_parts.append("## Task Preferences")
+        inst_parts.append(f"- **Average number of entities involved**: {self._task_preference.num_entities}")
+        inst_parts.append(f"- **Average number of operations involved**: {self._task_preference.num_opts}")
+        inst_parts.append(f"- **Relation difficulty**: {self._task_preference.relation_difficulty}")
 
         return "\n".join(inst_parts)
 
