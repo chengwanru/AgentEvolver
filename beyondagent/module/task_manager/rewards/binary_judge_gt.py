@@ -113,9 +113,9 @@ class LlmAsJudgeBinaryRewardCalculatorWithGT(RewardCalculator):
     _alpha_slow=0.95
     _update_lock = threading.Lock()  # 锁也需要作为类变量共享
 
-    def __init__(self, task: Task, model_name='qwq-plus', use_mean_constraint=True):
+    def __init__(self, task: Task, model_name='qwen3-235b-a22b-instruct-2507', use_mean_constraint=True):
         super().__init__(task)
-
+        
         self._client = DashScopeClient(model_name=model_name)
         self._use_mean_constraint = use_mean_constraint
 
@@ -230,5 +230,5 @@ class LlmAsJudgeBinaryRewardCalculatorWithGT(RewardCalculator):
 
 @grader_manager.reg("llm-binary-gt-no_constraint")
 class LlmAsJudgeBinaryRewardCalculatorWithGTNoConstraint(LlmAsJudgeBinaryRewardCalculatorWithGT):
-    def __init__(self, task: Task, model_name='qwq-plus'):
+    def __init__(self, task: Task, model_name='qwen3-235b-a22b-instruct-2507'):
         super().__init__(task, model_name, use_mean_constraint=False)
