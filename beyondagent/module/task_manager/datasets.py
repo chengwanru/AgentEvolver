@@ -47,6 +47,13 @@ class FullDataset(Dataset):
         self._dataset = to_rl_dataset(self._objectives, self._tokenizer, self._config, self._processor)
         logger.info(f"Auto-refreshed dataset: #objectives={len(self._objectives)}, #rlhf={len(self._dataset)}")
 
+    def update(self):
+        """手动触发一次数据集重建"""
+        if not self._synthetic_objectives:
+            logger.warning("No synthetic objectives available, did you call load_from_file() or reload() first?")
+        self._rebuild_dataset()
+        logger.info("Dataset updated manually via update().")
+
     def set_mixture_strategy(self, strategy: MixtureStrategy):
         self._mixture_strategy = strategy
         logger.info(f"mixture strategy updated to: {type(strategy).__name__}")
@@ -116,22 +123,6 @@ class FullDataset(Dataset):
         if self._dataset is None:
             return 0
         return len(self._dataset)
-
-    def __iter__(self):
-        """在 DataLoader 完成一轮迭代后自动刷新"""
-        if self._dataset is None:
-            raise RuntimeError("Dataset not loaded. Call reload() or load_from_file() first.")
-        
-        # 如果上一轮标记了刷新，则先重建
-        if self._refresh_after_epoch:
-            self._rebuild_dataset()
-            self._refresh_after_epoch = False
-
-        for i in range(len(self._dataset)):
-            yield self._dataset[i]
-        
-        # 一轮迭代结束后，标记下次迭代前刷新
-        self._refresh_after_epoch = True
 
 
 # wrapper for data auto-reloading
