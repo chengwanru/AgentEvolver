@@ -281,8 +281,7 @@ class ParallelEnvManager(object):
                 max_response_len=self.config.data.max_response_length,
                 extras={
                     "add_exp": trajectory.metadata.get("add_exp", None),
-                    # Flag for experience incorporation:
-                    # If True for positive samples, applies off_clip_high strategy
+                    # Flag for experience incorporation
 
                     "task_train_expmode": trajectory.metadata.get("task_train_exp_mode", None), 
                     # Mode for handling experience during trajectory-to-sample conversion:
@@ -305,8 +304,8 @@ class ParallelEnvManager(object):
         prompt_loss_mask, response_loss_mask = [], []
         messages = []
         reward_scores = []
-        extras = [] # List of dictionaries containing supplementary data for each trajectory, including "add_exp", "task_train_expmode", "exprience"
-        exp_mask_list = []  # List of binary masks indicating whether to consider experience for each sample in the batch
+        extras = [] # List of dictionaries containing supplementary data for each trajectory, including "add_exp", "task_train_expmode", "experience"
+        exp_mask_list = []  # List of binary masks indicating whether to consider off_clip_high for each sample in the batch
         
         for sample in samples:
             # Validate that all fields have the same length
@@ -348,7 +347,12 @@ class ParallelEnvManager(object):
             reward_scores.append(sample.reward_scores)
             extras.append(sample.extras)
 
-            exp_mask_list.append(torch.ones(len(sample.loss_mask), dtype=torch.int) if sample.extras.get("add_exp", False) else torch.zeros(len(sample.loss_mask), dtype=torch.int))
+            # Create experience mask: 1 if off_clip_high conditions met (add_exp=True, task_train_expmode="discard"), else 0
+            if sample.extras.get("add_exp", False) and sample.extras.get("task_train_expmode", None)=="discard":
+                exp_mask_list.append(torch.ones(len(sample.loss_mask), dtype=torch.int))
+            else:
+                exp_mask_list.append(torch.zeros(len(sample.loss_mask), dtype=torch.int))
+
 
 
         # Batch and pad sequences
