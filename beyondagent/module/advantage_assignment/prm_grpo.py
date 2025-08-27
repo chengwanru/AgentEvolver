@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# PRM step → (optional) group-level standardization on steps → per-trajectory projection to target sum → suffix-sum on steps → broadcast to tokens
+# PRM step → (optional) group-level standardization on steps → per-trajectory projection (optional) → suffix-sum on steps → broadcast to tokens
 from __future__ import annotations
 from typing import List, Dict, Optional
 from dataclasses import dataclass
@@ -135,7 +135,9 @@ def _build_fix(
     step_ids: torch.Tensor,
     hyper: PRMHyper,
 ) -> List[List[float]]:
-    """方案1：fix —— 固定基数（±base），最后一步吃掉剩余量以满足 ∑=±1。"""
+    """方案1：fix —— 固定基数（±base），不强制 ∑=±1。
+    成功/失败仅通过 orms_sign 决定整体方向：r_step = sign(ORM) * ( +base if good else -base )
+    """
     B = step_ids.size(0)
     out: List[List[float]] = []
     base = float(hyper.fix_base)
@@ -143,12 +145,10 @@ def _build_fix(
         K = _num_steps_from_step_ids(step_ids[i])
         if K == 0:
             out.append([]); continue
-        is_success = bool(orms_sign[i].item() > 0)
-        flags = _align_flags(step_flags[i] if i < len(step_flags) else [], K, is_success)
-        r = [(+base if f else -base) for f in flags]
-        # 让总和等于 ±1（按 orms_sign）
-        need = float(orms_sign[i].item()) - sum(r)
-        r[-1] += need
+        sgn = 1.0 if float(orms_sign[i].item()) > 0 else -1.0
+        # 对齐 flags；默认填充 good=True 只是保证长度，这里整体方向由 sgn 控制
+        flags = _align_flags(step_flags[i] if i < len(step_flags) else [], K, is_success=True)
+        r = [sgn * (+base if f else -base) for f in flags]
         out.append([float(x) for x in r])
     return out
 
@@ -224,10 +224,10 @@ def _build_decouple(
     group_ids: torch.Tensor,
     hyper: PRMHyper,
 ) -> List[List[float]]:
-    """方案4：decouple —— PRM 和 ORM 解耦。
-    - PRM：只用 flags 造一个“形状”向量（good=+1，bad=-1），与 ORM 无关；
-    - 标准化：对 PRM 形状在组内做 z-score；
-    - 投影：按比例缩放到目标总和（±1），用 ORM_sign 仅作为“总量”来源。
+    """方案4：decouple —— PRM 和 ORM 解耦；不强制 ∑=±1。
+    - PRM：只用 flags 造“形状”（good=+1，bad=−1），与 ORM 无关；
+    - 组内 z-score（step级）；
+    - 只用 ORM_sign 决定整体方向：r_step = sign(ORM) * zscored_shape_step
     """
     B = step_ids.size(0)
     # 1) 形状（与 ORM 无关）
@@ -236,15 +236,17 @@ def _build_decouple(
         K = _num_steps_from_step_ids(step_ids[i])
         if K == 0:
             shape_raw.append([]); continue
-        # 对齐后：good=+1, bad=-1 （最终符号由 orms_sign 控制总量）
         flags = _align_flags(step_flags[i] if i < len(step_flags) else [], K, is_success=True)
         shape_raw.append([1.0 if f else -1.0 for f in flags])
     # 2) group z-score（仅对“形状”做）
     shape_std = _group_zscore_on_steps(shape_raw, group_ids, hyper)
-    # 3) 按比例缩放到 ±1（ORM_sign）
+    # 3) 只乘以 orms_sign 的方向，不做投影到 ±1
     out: List[List[float]] = []
     for i in range(B):
-        out.append(_per_traj_scale_to_target_sum(shape_std[i], float(orms_sign[i].item()), eps=hyper.eps))
+        if not shape_std[i]:
+            out.append([]); continue
+        sgn = 1.0 if float(orms_sign[i].item()) > 0 else -1.0
+        out.append([float(sgn * x) for x in shape_std[i]])
     return out
 
 # =========================
@@ -321,12 +323,12 @@ def compute_prm_grpo_advantages(
     if token_level_rewards is None:
         raise KeyError("token-level rewards not found in batch (tried keys: token_level_rewards / response_token_level_rewards / token_rewards)")
 
-    # ---- ORM_sign = ±1（你要求保持 sum>0 → +1；sum<=0 → -1）----
+    # ---- ORM_sign = ±1（保持 sum>0 → +1；sum<=0 → -1）----
     orm_sum = token_level_rewards.sum(dim=1)   # (B,)
     orms_sign = torch.where(orm_sum > 0, torch.ones_like(orm_sum), -torch.ones_like(orm_sum)).to(dtype=torch.float32)
 
     # ---- Build step rewards by scheme ----
-    scheme = scheme.lower()
+    scheme = (scheme or "allocation_c").lower()
     if scheme == "fix":
         step_rewards = _build_fix(orms_sign, step_flags, step_ids, hyper)
     elif scheme == "allocation":
