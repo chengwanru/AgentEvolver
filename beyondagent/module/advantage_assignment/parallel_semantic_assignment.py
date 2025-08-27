@@ -209,7 +209,7 @@ async def _async_safe_query(
                         temperature=0.0,
                         extra_body={"enable_thinking": True},
                         stream=True,
-                        max_tokens=10000,
+                        max_tokens=8192,
                         timeout=timeout_s,
                     )
 
@@ -232,7 +232,7 @@ async def _async_safe_query(
                         messages=messages,
                         temperature=0.0,
                         timeout=timeout_s,
-                        max_tokens=10000,
+                        max_tokens=8192,
                     )
                     return response.choices[0].message.content.strip()
 
