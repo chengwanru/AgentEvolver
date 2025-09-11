@@ -1183,7 +1183,7 @@ class BeyondAgentRayPPOTrainer(RayPPOTrainer):
                                 enable_length_normalization=getattr(prm_cfg, "enable_length_normalization", False),
                             )
 
-                            scheme = getattr(prm_cfg, "prm_scheme", "allocation_c")
+                            scheme = getattr(prm_cfg, "prm_scheme", "decouple")
 
                             out = compute_prm_grpo_advantages(
                                 batch      = batch,

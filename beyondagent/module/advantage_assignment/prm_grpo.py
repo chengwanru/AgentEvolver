@@ -12,12 +12,12 @@ import math
 
 @dataclass
 class PRMHyper:
-    # 权重：一致性步的权重大，不一致性步的权重小（用于 allocation / allocation_c）
+    # 权重：一致性步的权重大，不一致性步的权重小（用于 allocation）
     consistent_scale: float = 1.0
     pos_unconsistent_scale: float = 0.2   # 成功轨迹里的 BAD 步权重
     neg_unconsistent_scale: float = 0.2   # 失败轨迹里的 GOOD 步权重
     eps: float = 1e-8
-    do_batch_norm: bool = True          # 是否做组内 z-score（按 step 级，allocation_c/decouple 会用到）
+    do_batch_norm: bool = True          # 是否做组内 z-score（按 step 级，allocation/decouple 会用到）
     equal_trajectory_weight: bool = True  # True=每条轨迹等权（GRPO）；False=把所有 step 拉平成一个大样本（GSPO）
     fix_base: float = 0.2                 # fix 方案的基础幅度（good=+base, bad=-base）
     alpha: float = 1.0                   # PRM权重平衡系数
@@ -818,7 +818,7 @@ def compute_prm_grpo_advantages(
     batch,                          # DataProto 或兼容结构：batch.batch[...] 可索引
     step_flags: List[List[bool]],   # 每条轨迹的 GOOD/BAD 标志
     hyper: Optional[PRMHyper] = None,
-    scheme: str = "allocation_c",   # "fix" | "allocation" | "allocation_c" | "decouple"
+    scheme: str = "decouple",   #  "allocation" | "decouple"
 ) -> dict:
     """
     PRM-GRPO优势函数计算统一入口
@@ -851,9 +851,7 @@ def compute_prm_grpo_advantages(
         step_flags: 每条轨迹的step级别GOOD/BAD标志
         hyper: PRM超参数配置，若为None则使用默认配置
         scheme: 奖励构造方案
-            - "fix": 固定基数奖励构造
             - "allocation": 一致性权重瓜分 + 组内减均值中心化
-            - "allocation_c": 一致性瓜分 → 组内归一化 → 按比例缩放投影
             - "decouple": PRM和ORM分别标准化后组合
     
     Returns:
@@ -903,7 +901,7 @@ def compute_prm_grpo_advantages(
 
     # ---- 4. 方案选择阶段：根据scheme选择具体的奖励构造方案 ----
     extra_metrics = {}
-    scheme = (scheme or "allocation_c").lower()
+    scheme = (scheme or "decouple").lower()
 
     if scheme == "allocation":
         # 方案2：allocation —— 一致性权重瓜分 + 组内减均值中心化
@@ -912,7 +910,7 @@ def compute_prm_grpo_advantages(
         # 方案4：decouple —— PRM和ORM分别标准化后组合
         step_rewards, extra_metrics = _build_decouple(orm_scores, step_flags, step_ids, group_ids, hyper,)
     else:
-        raise ValueError(f"Unknown PRM scheme: {scheme} (expected one of: fix | allocation | allocation_c | decouple)")
+        raise ValueError(f"Unknown PRM scheme: {scheme} (expected one of: allocation | decouple)")
 
     # ---- 5. 优势值计算阶段：step后缀和 + 广播到token ----
     # 对step-level奖励进行后缀和计算得到step-level优势值
