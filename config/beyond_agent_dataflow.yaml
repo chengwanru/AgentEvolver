@@ -41,15 +41,13 @@ actor_rollout_ref:
     max_env_len: 4096
     enable_request_id: False
     sparse: True
-    magnify_success: False
-    train_history_infer_token: True
 
   model:
     path: /mnt/data/zouanni.zan/models/Qwen2.5-14B-Instruct
     
 
 thread_pool:
-  max_workers: 5
+  max_workers: 8
 
 env_service:
   env_type: "appworld"
@@ -59,7 +57,7 @@ env_service:
 task_manager:
   train_data_path: tasks_explored.train.json # tasks will be explored once if set. use it if you want to keep the same explorations.
   val_data_path: tasks_explored.val.json # tasks will be explored once if set. use it if you want to keep the same explorations.
-  llm_client: qwen-plus # policy, or other llm name provided in DashScopeClient
+  llm_client: qwen3-235b-a22b-instruct-2507 # policy, or other llm name provided in DashScopeClient
   # 0 - stop exploration
   n: 0
   bs: ${data.train_batch_size} # this should be the same as train_batch_size
@@ -78,7 +76,7 @@ task_manager:
   strategy: random
   strategy_args:
     max_explore_step: 30
-    max_llm_retries: 3
+    max_llm_retries: 6
     env_url: ${env_service.env_url}
     exploration_llm_temperature: 1.0
     exploration_llm_top_p: 1.0

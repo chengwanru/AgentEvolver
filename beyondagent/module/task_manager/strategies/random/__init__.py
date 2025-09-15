@@ -16,7 +16,7 @@ from beyondagent.module.task_manager.strategies.common.prompts.prompt_summarize 
     parse_tasks_from_response,
 )
 from beyondagent.module.task_manager.strategies import TaskExploreStrategy
-from beyondagent.module.task_manager.prelude_profiles import bfcl
+from beyondagent.module.task_manager.prelude_profiles import bfcl, appworld
 from beyondagent.schema.task import Task, TaskObjective
 from beyondagent.schema.trajectory import Trajectory
 
@@ -68,7 +68,11 @@ class LlmRandomSamplingExploreStrategy(TaskExploreStrategy):
         )
         agent_flow.max_steps = self._max_explore_step  # this is ugly
         agent_flow.max_model_len=102400 # TODO max len
-
+        
+        
+        if os.environ.get("DEBUG_ARG","").find("NO_QUERY")!=-1:
+            # 当 query 有值时，会覆盖掉 init message 中的原始 query
+            task.query="Start your exploration!"
         traj = env_worker.execute(
             data_id=data_id,
             rollout_id=rollout_id,
@@ -80,7 +84,7 @@ class LlmRandomSamplingExploreStrategy(TaskExploreStrategy):
                 'token':[0],
             },
             stop=[False], # 这俩玩意有没有什么办法能封装一下
-            system_prompt=get_agent_interaction_system_prompt(bfcl.user_profile), # FIXME debug profile
+            system_prompt=get_agent_interaction_system_prompt(appworld.user_profile), # FIXME debug profile
         )
 
         return [traj]
@@ -88,8 +92,10 @@ class LlmRandomSamplingExploreStrategy(TaskExploreStrategy):
     def summarize(self, task: Task, trajectory: Trajectory) -> list[TaskObjective]:
         llm_fn = self._get_llm_chat_fn(self.llm_client_summarize)
         old_objectives = self._old_retrival.retrieve_objectives(task)
+        # mask information
+        trajectory.steps[2]['content'] = "[MASKED]"
         system_prompt, user_prompt = get_task_summarize_prompt(
-            [trajectory], old_objectives, bfcl.user_profile # FIXME debug profile
+            [trajectory], old_objectives, appworld.user_profile # FIXME debug profile
         )
         messages = [
             {"role": "system", "content": system_prompt},
@@ -126,11 +132,12 @@ class LlmRandomSamplingExploreStrategy(TaskExploreStrategy):
                     res = llm_client.chat(
                         messages=input_messages, sampling_params=updated_sampling_params
                     )
-                    break
+                    if res is not None and res!="":
+                        break
 
                 except Exception as e:
                     logger.exception(f"rollout_server.{i} error: {e.args}")
-                    time.sleep(i + 1)
+                    time.sleep(2**i)
 
             assert res is not None and res!="", f"LLM client failed to chat"
             return {
