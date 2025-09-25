@@ -28,6 +28,7 @@ import os
 import hydra
 import ray
 
+from beyondagent.module.task_manager.env_profiles import EnvProfile
 from verl.trainer.ppo.reward import load_reward_manager
 
 from beyondagent.module.trainer.ba_ray_trainer import BeyondAgentRayPPOTrainer
@@ -236,7 +237,7 @@ class TaskRunner:
         train_task_manager=TaskManager(
             config=config,
             exploration_strategy=config.task_manager.strategy,
-            user_profile=None,
+            env_profile=EnvProfile.load_from_json(config.task_manager.env_profile),
             exploration_strategy_args=config.task_manager.strategy_args,
             llm_client=llm_client, # or use policy model
             old_retrival=NaiveTaskObjectiveRetrieval(),
@@ -255,7 +256,7 @@ class TaskRunner:
         val_task_manager=TaskManager(
             config=config,
             exploration_strategy=config.task_manager.strategy,
-            user_profile=None,
+            env_profile=EnvProfile.load_from_json(config.task_manager.env_profile),
             exploration_strategy_args=config.task_manager.strategy_args,
             llm_client=llm_client, # or use policy model
             old_retrival=NaiveTaskObjectiveRetrieval(),

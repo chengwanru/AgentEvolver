@@ -67,7 +67,7 @@ class TaskPreference:
         return mapping[int(self._relation_difficulty)]
 
 
-class UserProfile:
+class EnvProfile:
     """User profile and task environment description generator."""
     def __init__(self, name: str, background: str, task: TaskPreference):
         self._name = name
@@ -158,13 +158,13 @@ class UserProfile:
         return json.dumps(data, indent=2)
     
     def save_to_json(self, file_path: str):
-        """Save UserProfile to a JSON file."""
+        """Save EnvProfile to a JSON file."""
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(self.to_json())
     
     @classmethod
-    def from_json(cls, json_str: str) -> 'UserProfile':
-        """Create UserProfile from JSON string."""
+    def from_json(cls, json_str: str) -> 'EnvProfile':
+        """Create EnvProfile from JSON string."""
         data = json.loads(json_str)
         
         # Create task preference
@@ -175,7 +175,7 @@ class UserProfile:
         )
         
         # Create user profile
-        user_profile = cls(
+        env_profile = cls(
             name=data["name"],
             background=data["background"],
             task=task_pref
@@ -193,11 +193,11 @@ class UserProfile:
             )
             entities.append(entity)
         
-        user_profile.reg_entities(entities)
-        return user_profile
+        env_profile.reg_entities(entities)
+        return env_profile
     
     @classmethod
-    def load_from_json(cls, file_path: str) -> 'UserProfile':
+    def load_from_json(cls, file_path: str) -> 'EnvProfile':
         """Load UserProfile from a JSON file."""
         with open(file_path, 'r', encoding='utf-8') as f:
             return cls.from_json(f.read())
@@ -227,7 +227,7 @@ if __name__ == "__main__":
 
     task_pref = TaskPreference(num_entities=2, num_opts=2, relation_difficulty=3)
 
-    user = UserProfile(
+    user = EnvProfile(
         name="Xiaoming",
         background="A music enthusiast who enjoys playing songs based on mood.",
         task=task_pref

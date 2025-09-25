@@ -37,7 +37,7 @@ from beyondagent.module.task_manager.filters.filters import NaiveTaskPostFilter,
 
 from beyondagent.module.task_manager.base import LlmClient, TaskObjectiveRetrieval
 from beyondagent.module.task_manager.strategies.random import LlmRandomSamplingExploreStrategy
-from beyondagent.module.task_manager.user_profiles import UserProfile
+from beyondagent.module.task_manager.env_profiles import EnvProfile
 from beyondagent.schema.task import Task, TaskObjective
 from beyondagent.schema.trajectory import Trajectory
 from verl.utils.dataset.rl_dataset import RLHFDataset
@@ -56,7 +56,7 @@ class TaskManager(object):
         self,
         config: DictConfig,
         exploration_strategy: str,
-        user_profile:UserProfile,
+        env_profile:EnvProfile,
         exploration_strategy_args,
         llm_client: LlmClient,
         old_retrival: TaskObjectiveRetrieval,
@@ -81,7 +81,7 @@ class TaskManager(object):
         self._post_filter: list[TaskPostFilter] = [LlmFilter(env_service_url,llm_client,self._num_exploration_threads,tokenizer=tokenizer,config=config)]
         
         self._tasks: list[Task]=[]
-        self._exploration_strategy._inject_deps(self._old_retrival,self._llm_client,DashScopeClient(model_name='qwq-plus',max_tokens=8192),user_profile=user_profile)
+        self._exploration_strategy._inject_deps(self._old_retrival,self._llm_client,DashScopeClient(model_name='qwen3-235b-a22b-instruct-2507',max_tokens=8192),env_profile=env_profile)
     
     @property
     def seed_tasks(self):

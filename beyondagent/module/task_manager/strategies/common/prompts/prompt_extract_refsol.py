@@ -3,7 +3,7 @@
 import json
 from typing import Optional, Sequence, Tuple
 
-from beyondagent.module.task_manager.user_profiles import UserProfile
+from beyondagent.module.task_manager.env_profiles import EnvProfile
 from beyondagent.schema.task import Task, TaskObjective
 from beyondagent.schema.trajectory import Trajectory
 from .prompt_summarize import _get_action_observation_pair
@@ -52,7 +52,7 @@ For each identified task, output exactly one block in this format:
 def get_task_summarize_prompt(
     trajectories: Sequence[Trajectory],
     old_objectives: Sequence[TaskObjective],
-    profile: UserProfile | None,
+    profile: EnvProfile | None,
 ) -> tuple[str, str]:
     """获取任务摘要 prompt"""
     x = ""
