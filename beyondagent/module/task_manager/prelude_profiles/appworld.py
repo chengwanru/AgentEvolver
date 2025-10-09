@@ -1,4 +1,5 @@
-from beyondagent.module.task_manager.user_profiles import EnvEntity, EnvEntityOpt, TaskPreference, UserProfile
+import copy
+from beyondagent.module.task_manager.env_profiles import EnvEntity, EnvEntityOpt, TaskPreference, EnvProfile
 
 venmo = EnvEntity(
     name="Venmo",
@@ -153,8 +154,10 @@ filesystem = EnvEntity(
     ]
 )
 
-# Define the user profile
-user_profile = UserProfile(
+
+
+
+env_profile = EnvProfile(
     name="Bob",
     background="A general computer user.",
     task=TaskPreference(
@@ -163,5 +166,9 @@ user_profile = UserProfile(
         relation_difficulty=3,
     )
 )
+
 # ⭐ Register the environment entities with the user profile
-user_profile.reg_entities([venmo, amazon, spotify, gmail, simplenote, phone, todoist, splitwise, filesystem])
+env_profile.reg_entities([venmo, amazon, spotify, gmail, simplenote, phone, todoist, splitwise, filesystem])
+
+user_profile_wo_rubric=copy.deepcopy(env_profile)
+user_profile_wo_rubric._rubrics.clear() # clear the rubrics

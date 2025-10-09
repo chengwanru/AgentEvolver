@@ -72,13 +72,18 @@ class TaskPreference:
         return mapping[int(self._relation_difficulty)]  # ⭐ Maps the difficulty level to a descriptive string
 
 
-class UserProfile:
+class EnvProfile:
     """User profile and task environment description generator."""
     def __init__(self, name: str, background: str, task: TaskPreference):
         self._name = name
         self._background = background
         self._entities: List[EnvEntity] = []
         self._task_preference = task
+        
+        self._rubrics=[]
+    
+    def reg_rubric(self, rubric: str):
+        self._rubrics.append(rubric)
 
     def reg_entity(self, entity: EnvEntity):
         """
@@ -148,6 +153,11 @@ class UserProfile:
         inst_parts.append(f"- **Average number of entities involved**: {self._task_preference.num_entities}")
         inst_parts.append(f"- **Average number of operations involved**: {self._task_preference.num_opts}")  # ⭐ Adds the number of operations to the instruction
         inst_parts.append(f"- **Relation difficulty**: {self._task_preference.relation_difficulty}")
+        inst_parts.append("")
+        inst_parts.append(f"**Rubrics**:")
+        inst_parts.extend(self._rubrics)
+        inst_parts.append("You are required to follow these preferences strictly.")
+        inst_parts.append("")
 
         return "\n".join(inst_parts)  # ⭐ Joins the parts into a single string and returns it
 
@@ -189,7 +199,7 @@ class UserProfile:
             f.write(self.to_json())  # ⭐ Write the JSON representation of the profile to the file
 
     @classmethod
-    def from_json(cls, json_str: str) -> 'UserProfile':
+    def from_json(cls, json_str: str) -> 'EnvProfile':
         """
         Deserialize a JSON string into a UserProfile object.
 
@@ -209,7 +219,7 @@ class UserProfile:
         )
         
         # Create user profile
-        user_profile = cls(
+        env_profile = cls(
             name=data["name"],
             background=data["background"],
             task=task_pref
@@ -227,11 +237,11 @@ class UserProfile:
             )
             entities.append(entity)
         
-        user_profile.reg_entities(entities)  # ⭐ Register the entities with the user profile
-        return user_profile
+        env_profile.reg_entities(entities)  # ⭐ Register the entities with the user profile
+        return env_profile
 
     @classmethod
-    def load_from_json(cls, file_path: str) -> 'UserProfile':
+    def load_from_json(cls, file_path: str) -> 'EnvProfile':
         """
         Loads a UserProfile instance from a given JSON file.
 
@@ -269,7 +279,7 @@ if __name__ == "__main__":
 
     task_pref = TaskPreference(num_entities=2, num_opts=2, relation_difficulty=3)
 
-    user = UserProfile(
+    user = EnvProfile(
         name="Xiaoming",
         background="A music enthusiast who enjoys playing songs based on mood.",
         task=task_pref

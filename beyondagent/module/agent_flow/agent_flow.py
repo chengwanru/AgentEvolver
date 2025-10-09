@@ -178,7 +178,7 @@ class AgentFlow(BaseAgentFlow):
             self.cmt.save_env_output(state, input_msg_ref=step_input_message_arr, add_nothink=add_nothink)  # ⭐ Save the environment output
 
             # 9. 🔚 determine if the episode is terminated
-            self.cmt.is_terminated = env_output["is_terminated"]  # ⭐ Determine if the episode is terminated
+            self.cmt.is_terminated = env_output["is_terminated"]
             if self.cmt.is_terminated or err_in_env:
                 break
 
