@@ -180,7 +180,7 @@ class AgentFlow(BaseAgentFlow):
             # 9. 🔚 determine if the episode is terminated
             self.cmt.is_terminated = env_output["is_terminated"]
             # agent can terminate the task by sending /terminate_myself
-            if self.cmt.is_terminated or llm_output['content'].find('/terminate_myself')!=-1 or err_in_env:
+            if self.cmt.is_terminated or err_in_env:
                 break
 
         tmux['step'][thread_index] = -1
