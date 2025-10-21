@@ -119,8 +119,6 @@ task_manager:
   mixture:
     # whether to use original tasks provided by the environment
     use_original_tasks: True
-    # ratio of original tasks and synthetic tasks
-    original_data_ratio: 1.0
     synthetic_data_ratio: 0.0
     # whether to shuffle tasks *after* mixture
     shuffle: True
