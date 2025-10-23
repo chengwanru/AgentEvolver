@@ -18,13 +18,13 @@ Run the launcher with desired options. Example:
 
 ```bash
 python launcher.py --kill --conf examples/self-question-nav-attr.yaml --with-appworld --with-exp-maker --with-logview
+# Explaination:
+# --kill:            Kill existing all Python and Ray processes (except VSCode and itself, use with caution if you are running some other training jobs)
+# --conf:            Choose a experiment yaml to launch training (the primary argument)
+# --with-appworld:   Let the launcher help you start `Appworld` environment service, it is smart enough to recognize existing Appworld already running in the background.
+# --with-exp-maker:  Let the launcher help you start `ReMe` environment service, it will check background automatically and avoid re-launching the target service.
+# --with-logview:    Open rollout log viewer. If you are using VSCode, a browser windows will pop out automatically.
 ```
-
-This command will:
-- Kill existing Python and Ray processes (except VSCode and itself)
-- Use `examples/self-question-nav-attr.yaml` as the experiment configuration
-- Launch the AppWorld and Exp Maker services
-- Prepare backups and start the main experiment
 
 ## Command-Line Arguments
 
