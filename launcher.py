@@ -8,7 +8,7 @@ import os
 import signal
 import shlex
 from dotenv import load_dotenv
-from beyondagent.utils.daemon import LaunchCommandWhenAbsent
+from agentevolver.utils.daemon import LaunchCommandWhenAbsent
 
 load_dotenv()
 BACK_TARGETS = os.environ.get('BACK_TARGETS', './config,./beyondagent').split(',')
