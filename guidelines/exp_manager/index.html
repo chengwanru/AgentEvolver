@@ -143,6 +143,7 @@
                     
 
 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37q.159.666.16 1.38a6 6 0 0 1-6 6v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.9 14.9 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.9 14.9 0 0 0-2.58 5.84m2.699 2.7q-.155.032-.311.06a15 15 0 0 1-2.448-2.448l.06-.312m-2.24 2.39a4.49 4.49 0 0 0-1.757 4.306q.341.054.696.054a4.5 4.5 0 0 0 3.61-1.812M16.5 9a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"/></svg>
+<!-- <iconify-icon class="size-5" icon="heroicons:rocket-launch" noobserver></iconify-icon> -->
 
 
                 </span>
@@ -454,88 +455,56 @@
                         <div data-slot="docs" class="flex items-stretch text-[1.05rem] sm:text-[15px] xl:w-full">
                             <div class="flex min-w-0 flex-1 flex-col">
                                 <div class="h-(--top-spacing) shrink-0"></div>
-                                <article class="w-full" view-transition-name="page">
-  <div class="flex flex-col gap-2">
+                                <article class=" w-full" view-transition-name="page">
     <div class="flex flex-col gap-2">
-      <div id="page-header" class="flex items-start justify-between">
-        <h1
-          class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-        >
-          Experience Manager
-        </h1>
+        <div class="flex flex-col gap-2">
+            <div id="page-header" class="flex items-start justify-between">
 
-        <div class="flex items-center gap-2 pt-1.5">
-          
-<button onclick="fetch(`https://modelscope.github.io/AgentEvolver/guidelines/exp_manager.md`).then((r) => r.blob()).then((blob) => navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]))" 
-        data-slot="button" 
-        class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md gap-1.5 px-3 has-[&>svg]:px-2.5 h-8 shadow-none md:h-7 md:text-[0.8rem]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-copy ">
-    <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
-</svg>
-<span class="max-md:hidden">Copy Page</span>
-</button> 
-          
-          <a
-            data-slot="button"
-            id="previous-button"
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
-            href="/AgentEvolver/guidelines/task_manager/"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="tabler-icon tabler-icon-arrow-left"
-            >
-              <path d="M5 12l14 0"></path>
-              <path d="M5 12l6 6"></path>
-              <path d="M5 12l6 -6"></path>
-            </svg>
-            <span class="sr-only">Previous</span>
-          </a>
-           
-          
-          <a
-            data-slot="button"
-            id="next-button"
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
-            href="/AgentEvolver/guidelines/adv_processor/"
-          >
-            <span class="sr-only">Next</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="tabler-icon tabler-icon-arrow-right"
-            >
-              <path d="M5 12l14 0"></path>
-              <path d="M13 18l6 -6"></path>
-              <path d="M13 6l6 6"></path>
-            </svg>
-          </a>
-          
+                <h1 class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+                    Experience Manager
+                </h1>
+
+                <div class="flex items-center gap-2 pt-1.5">
+                    
+                    <a data-slot="button" id="previous-button"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
+                        href="/AgentEvolver/guidelines/task_manager/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="tabler-icon tabler-icon-arrow-left ">
+                            <path d="M5 12l14 0"></path>
+                            <path d="M5 12l6 6"></path>
+                            <path d="M5 12l6 -6"></path>
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    
+                    
+                    <a data-slot="button" id="next-button"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
+                        href="/AgentEvolver/guidelines/adv_processor/">
+                        <span class="sr-only">Next</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="tabler-icon tabler-icon-arrow-right ">
+                            <path d="M5 12l14 0"></path>
+                            <path d="M13 18l6 -6"></path>
+                            <path d="M13 6l6 6"></path>
+                        </svg>
+                    </a>
+                    
+                </div>
+            </div>
+            
         </div>
-      </div>
-      
+        <div class="flex justify-end items-center">
+            
+            
+        </div>
+
     </div>
-    <div class="flex justify-end items-center">
-       
-    </div>
-  </div>
-  <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
-    <h2 id="overview">🚀 Overview</h2>
+    <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
+        <h2 id="overview">🚀 Overview</h2>
 <p>Exploration in complex environments is a key challenge for autonomous agents. Traditional reinforcement learning approaches rely heavily on trial-and-error, often generating redundant trajectories and converging slowly. In contrast, humans efficiently leverage past experiences to guide future actions, learning faster and more systematically.</p>
 <p>The <strong><code>Self-Navigating</code></strong> framework adopts this principle by enabling agents to internalize and reuse prior experiences. It shifts exploration from unguided trial-and-error to structured, knowledge-driven self-improvement, improving both learning efficiency and policy quality.</p>
 <p>At the core of the framework, the <strong>Experience Manager</strong> oversees all aspects of experience handling, including:</p>
@@ -571,19 +540,19 @@ This module performs two levels of adaptive allocation:</p>
 </ul>
 </li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Class: ExperienceManager
-# Function: allocate_train_mode()
-mode_to_ratio = {
-    &quot;allkeep&quot;: 1.0,
-    &quot;alldiscard&quot;: 0.0,
-    &quot;hybrid&quot;: self.train_sample_keepratio
-}
-keep_ratio = mode_to_ratio.get(
-    self.train_sample_mode, self.train_sample_keepratio
-)
-keep_count = int(len(tasks) * keep_ratio)
-exp_modes = ['keep'] * keep_count + ['discard'] * (len(tasks) - keep_count)
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Class: ExperienceManager</span>
+<span class="c1"># Function: allocate_train_mode()</span>
+<span class="n">mode_to_ratio</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;allkeep&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">&quot;alldiscard&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">&quot;hybrid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_sample_keepratio</span>
+<span class="p">}</span>
+<span class="n">keep_ratio</span> <span class="o">=</span> <span class="n">mode_to_ratio</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">train_sample_mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_sample_keepratio</span>
+<span class="p">)</span>
+<span class="n">keep_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span> <span class="o">*</span> <span class="n">keep_ratio</span><span class="p">)</span>
+<span class="n">exp_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;keep&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">keep_count</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;discard&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span> <span class="o">-</span> <span class="n">keep_count</span><span class="p">)</span>
+</code></pre></div>
 
 <ul>
 <li><strong>Rollout-Level Allocation</strong><ul>
@@ -598,17 +567,17 @@ exp_modes = ['keep'] * keep_count + ['discard'] * (len(tasks) - keep_count)
 </ul>
 </li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Class: ExperienceManager
-# Function: allocate_add_exp()
-add_exp_choices = {
-    &quot;woexp&quot;: [False] * rollout_n,
-    &quot;mixed&quot;: sorted(
-        [i &lt; round(rollout_n * self.rollout_expratio) for i in range(rollout_n)],
-        key=lambda _: random.random()
-    ),
-    &quot;all&quot;: [True] * rollout_n
-}[exp_mode]
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Class: ExperienceManager</span>
+<span class="c1"># Function: allocate_add_exp()</span>
+<span class="n">add_exp_choices</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;woexp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">rollout_n</span><span class="p">,</span>
+    <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">round</span><span class="p">(</span><span class="n">rollout_n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollout_expratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rollout_n</span><span class="p">)],</span>
+        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="n">rollout_n</span>
+<span class="p">}[</span><span class="n">exp_mode</span><span class="p">]</span>
+</code></pre></div>
 
 <p><strong>✅Effect</strong>:</p>
 <ul>
@@ -638,14 +607,14 @@ Convert raw trajectories into summarized experiences <strong>asynchronously</str
 <p>Stores summarized results in the shared experience pool.</p>
 </li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Class: ExperienceManager
-# FUnction: submit_summary_task()
-summary_task = self.thread_pool.submit(
-    self.em_client.call_summarizer,
-    trajectories=trajectories,
-    workspace_id=reme_config.workspace_id
-    )
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Class: ExperienceManager</span>
+<span class="c1"># FUnction: submit_summary_task()</span>
+<span class="n">summary_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread_pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">em_client</span><span class="o">.</span><span class="n">call_summarizer</span><span class="p">,</span>
+    <span class="n">trajectories</span><span class="o">=</span><span class="n">trajectories</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="n">reme_config</span><span class="o">.</span><span class="n">workspace_id</span>
+    <span class="p">)</span>
+</code></pre></div>
 
 <p><strong>✅Effect</strong>:
 The experience pool grows in parallel with training, keeping the agent’s knowledge base continuously updated.</p>
@@ -664,17 +633,17 @@ Make rollouts context-aware by injecting relevant past experiences into prompts.
 <p>Enhances rollout context without modifying the underlying task.</p>
 </li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Class: ExperienceWorker
-# Function: manage_rollout_context()
-history_experience = self.em_client.call_context_generator(
-    trajectory=trajectory,
-    retrieve_top_k=reme_config.retrieve_top_k,
-    workspace_id=reme_config.workspace_id
-    )
-formatted_experience = self.experience_template.format(history_experience)
-new_content = formatted_experience + trajectory.steps[-1][&quot;content&quot;]
-trajectory.steps[-1][&quot;content&quot;] = new_content
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Class: ExperienceWorker</span>
+<span class="c1"># Function: manage_rollout_context()</span>
+<span class="n">history_experience</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">em_client</span><span class="o">.</span><span class="n">call_context_generator</span><span class="p">(</span>
+    <span class="n">trajectory</span><span class="o">=</span><span class="n">trajectory</span><span class="p">,</span>
+    <span class="n">retrieve_top_k</span><span class="o">=</span><span class="n">reme_config</span><span class="o">.</span><span class="n">retrieve_top_k</span><span class="p">,</span>
+    <span class="n">workspace_id</span><span class="o">=</span><span class="n">reme_config</span><span class="o">.</span><span class="n">workspace_id</span>
+    <span class="p">)</span>
+<span class="n">formatted_experience</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experience_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">history_experience</span><span class="p">)</span>
+<span class="n">new_content</span> <span class="o">=</span> <span class="n">formatted_experience</span> <span class="o">+</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+<span class="n">trajectory</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_content</span>
+</code></pre></div>
 
 <p><strong>✅Effect</strong>:
 Each rollout benefits from relevant prior knowledge, reducing redundant exploration.</p>
@@ -690,11 +659,11 @@ Ensure training messages remain clean by removing injected experience when not n
 <p>Removes them when <code>train_mode="discard"</code> while retaining extracted text for analysis.</p>
 </li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Class: ExperienceWorker
-# Function: manage_training_context()
-pattern = re.escape(self.experience_template).replace(r'\{\}', '(.*?)')
-cleaned_message = re.sub(pattern, '', message, flags=re.DOTALL)
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Class: ExperienceWorker</span>
+<span class="c1"># Function: manage_training_context()</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experience_template</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\{\}&#39;</span><span class="p">,</span> <span class="s1">&#39;(.*?)&#39;</span><span class="p">)</span>
+<span class="n">cleaned_message</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+</code></pre></div>
 
 <p><strong>✅Effect</strong>:
 Guarantees that training data integrity aligns with the current experience policy.</p>
@@ -710,30 +679,30 @@ Ensure stable policy updates when mixing <strong>on-policy rollouts</strong> and
 </li>
 <li>An <strong>experience mask (<code>exp_mask</code>)</strong> distinguishes the two. Each loss is clipped and optionally adjusted for negative advantages. Finally, the losses are combined and aggregated according to <code>loss_agg_mode</code>.</li>
 </ul>
-<pre class="codehilite"><code class="language-python"># Function: het_compute_token_on_off_policy_loss()
+<div class="codehilite"><pre><span></span><code><span class="c1"># Function: het_compute_token_on_off_policy_loss()</span>
 
-# 1️⃣ Compute policy ratio and approximate KL divergence
-negative_approx_kl = log_prob - old_log_prob  # difference between new and old log-probabilities
-ratio = torch.exp(negative_approx_kl)       # policy ratio r_t = exp(log_pi_new - log_pi_old)
-ppo_kl = verl_F.masked_mean(-negative_approx_kl, response_mask)  # approximate KL divergence
+<span class="c1"># 1️⃣ Compute policy ratio and approximate KL divergence</span>
+<span class="n">negative_approx_kl</span> <span class="o">=</span> <span class="n">log_prob</span> <span class="o">-</span> <span class="n">old_log_prob</span>  <span class="c1"># difference between new and old log-probabilities</span>
+<span class="n">ratio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">negative_approx_kl</span><span class="p">)</span>       <span class="c1"># policy ratio r_t = exp(log_pi_new - log_pi_old)</span>
+<span class="n">ppo_kl</span> <span class="o">=</span> <span class="n">verl_F</span><span class="o">.</span><span class="n">masked_mean</span><span class="p">(</span><span class="o">-</span><span class="n">negative_approx_kl</span><span class="p">,</span> <span class="n">response_mask</span><span class="p">)</span>  <span class="c1"># approximate KL divergence</span>
 
-# 2️⃣ Compute on-policy losses (exp_mask = 0)
-on_pg_losses, _, _ = compute_pg_losses(cliprange_low, cliprange_high)
-# Mask out experience tokens to ensure only fresh rollouts contribute
-on_pg_loss = verl_F.masked_mean(on_pg_losses, (1.0 - exp_mask) * response_mask)
+<span class="c1"># 2️⃣ Compute on-policy losses (exp_mask = 0)</span>
+<span class="n">on_pg_losses</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_pg_losses</span><span class="p">(</span><span class="n">cliprange_low</span><span class="p">,</span> <span class="n">cliprange_high</span><span class="p">)</span>
+<span class="c1"># Mask out experience tokens to ensure only fresh rollouts contribute</span>
+<span class="n">on_pg_loss</span> <span class="o">=</span> <span class="n">verl_F</span><span class="o">.</span><span class="n">masked_mean</span><span class="p">(</span><span class="n">on_pg_losses</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">exp_mask</span><span class="p">)</span> <span class="o">*</span> <span class="n">response_mask</span><span class="p">)</span>
 
-# 3️⃣ Compute off-policy losses (exp_mask = 1)
-off_pg_losses, _, _ = compute_pg_losses(off_cliprange_low, off_cliprange_high)
-# Mask to include only experience tokens
-off_pg_loss = verl_F.masked_mean(off_pg_losses, exp_mask * response_mask)
-# Ensure numerical stability
-off_pg_loss = torch.tensor(0.0) if off_pg_loss.isnan().item() else off_pg_loss
+<span class="c1"># 3️⃣ Compute off-policy losses (exp_mask = 1)</span>
+<span class="n">off_pg_losses</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">compute_pg_losses</span><span class="p">(</span><span class="n">off_cliprange_low</span><span class="p">,</span> <span class="n">off_cliprange_high</span><span class="p">)</span>
+<span class="c1"># Mask to include only experience tokens</span>
+<span class="n">off_pg_loss</span> <span class="o">=</span> <span class="n">verl_F</span><span class="o">.</span><span class="n">masked_mean</span><span class="p">(</span><span class="n">off_pg_losses</span><span class="p">,</span> <span class="n">exp_mask</span> <span class="o">*</span> <span class="n">response_mask</span><span class="p">)</span>
+<span class="c1"># Ensure numerical stability</span>
+<span class="n">off_pg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span> <span class="k">if</span> <span class="n">off_pg_loss</span><span class="o">.</span><span class="n">isnan</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">else</span> <span class="n">off_pg_loss</span>
 
-# 4️⃣ Combine both losses using the experience mask
-pg_losses = off_pg_losses * exp_mask + on_pg_losses * (1.0 - exp_mask)
-# Aggregate token-level losses according to selected mode (e.g., &quot;token-mean&quot;)
-pg_loss = agg_loss(loss_mat=pg_losses, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
-</code></pre>
+<span class="c1"># 4️⃣ Combine both losses using the experience mask</span>
+<span class="n">pg_losses</span> <span class="o">=</span> <span class="n">off_pg_losses</span> <span class="o">*</span> <span class="n">exp_mask</span> <span class="o">+</span> <span class="n">on_pg_losses</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">exp_mask</span><span class="p">)</span>
+<span class="c1"># Aggregate token-level losses according to selected mode (e.g., &quot;token-mean&quot;)</span>
+<span class="n">pg_loss</span> <span class="o">=</span> <span class="n">agg_loss</span><span class="p">(</span><span class="n">loss_mat</span><span class="o">=</span><span class="n">pg_losses</span><span class="p">,</span> <span class="n">loss_mask</span><span class="o">=</span><span class="n">response_mask</span><span class="p">,</span> <span class="n">loss_agg_mode</span><span class="o">=</span><span class="n">loss_agg_mode</span><span class="p">)</span>
+</code></pre></div>
 
 <p><strong>✅Effect</strong>:</p>
 <ul>
@@ -830,47 +799,47 @@ Default: <code>8</code>.</p>
 <p>Start the ReMe service with the following command:</p>
 </li>
 </ol>
-<pre class="codehilite"><code class="language-bash">cd path_to_reme/ReMe
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>path_to_reme/ReMe
 
-reme \
-  config=default \
-  backend=http \
-  thread_pool_max_workers=256 \
-  http.host=&quot;127.0.0.1&quot; \
-  http.port=8001 \
-  http.limit_concurrency=256 \
-  llm.default.model_name=qwen-max-2025-01-25 \
-  embedding_model.default.model_name=text-embedding-v4 \
-  vector_store.default.backend=local \
-  op.rerank_memory_op.params.enable_llm_rerank=false \
-  flow.summary_task_memory.flow_content=&quot;trajectory_preprocess_op &gt;&gt; (success_extraction_op|failure_extraction_op|comparative_extraction_op) &gt;&gt; memory_validation_op &gt;&gt; memory_deduplication_op &gt;&gt; update_vector_store_op&quot;
-</code></pre>
+reme<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="nv">config</span><span class="o">=</span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="nv">backend</span><span class="o">=</span>http<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="nv">thread_pool_max_workers</span><span class="o">=</span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>http.host<span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>http.port<span class="o">=</span><span class="m">8001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>http.limit_concurrency<span class="o">=</span><span class="m">256</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>llm.default.model_name<span class="o">=</span>qwen-max-2025-01-25<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>embedding_model.default.model_name<span class="o">=</span>text-embedding-v4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>vector_store.default.backend<span class="o">=</span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>op.rerank_memory_op.params.enable_llm_rerank<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>flow.summary_task_memory.flow_content<span class="o">=</span><span class="s2">&quot;trajectory_preprocess_op &gt;&gt; (success_extraction_op|failure_extraction_op|comparative_extraction_op) &gt;&gt; memory_validation_op &gt;&gt; memory_deduplication_op &gt;&gt; update_vector_store_op&quot;</span>
+</code></pre></div>
 
 <h3 id="step-2-recommended-configuration"><strong>Step 2: Recommended Configuration</strong></h3>
 <p>Add the following configuration to your experiment settings:</p>
-<pre class="codehilite"><code class="language-yaml">exp_manager:
-  val_rollout_mode: &quot;woexp&quot;    # rollout mode on dev/test set: [&quot;mixed&quot;, &quot;all&quot;, &quot;woexp&quot;]
-  train_rollout_mode: &quot;mixed&quot;  # rollout mode on train set: [&quot;mixed&quot;, &quot;all&quot;, &quot;woexp&quot;]
-  rollout_ratio: 0.5           # ratio of adding experience within group during rollout
-  train_sample_mode: &quot;alldiscard&quot;    # sample mode after train rollout: [&quot;allkeep&quot;, &quot;alldiscard&quot;, &quot;hybrid&quot;]
-  train_sample_keepratio: 0.0     # task-level ratio for keeping experience
-  experience_template: &quot;\n\nSome Related Experience to help you to complete the task:&lt;EXP&gt;{}&lt;/EXP&gt;\n\n&quot;  # template for inserting experience
-  init_exp_before_training: True  # whether to init experience pool before training
-  init_exp_only: False  # whether to only init experience pool
-  summary_batch_size: 8  # batch size for experience summarization
-  reme:
-    base_url: &quot;http://127.0.0.1:8001&quot;  # base URL for ReMe service
-    workspace_id: &quot;default&quot;  # workspace ID for ReMe
-    enable_summarizer: True  # whether to enable experience summarizer
-    enable_context_generator: True  # whether to enable context generator
-    retrieve_top_k: 3  # number of top experiences to retrieve
-    updated_freq: 0   # experience pool update frequency (in steps, 0=disabled)
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nt">exp_manager</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">val_rollout_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;woexp&quot;</span><span class="w">    </span><span class="c1"># rollout mode on dev/test set: [&quot;mixed&quot;, &quot;all&quot;, &quot;woexp&quot;]</span>
+<span class="w">  </span><span class="nt">train_rollout_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mixed&quot;</span><span class="w">  </span><span class="c1"># rollout mode on train set: [&quot;mixed&quot;, &quot;all&quot;, &quot;woexp&quot;]</span>
+<span class="w">  </span><span class="nt">rollout_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">           </span><span class="c1"># ratio of adding experience within group during rollout</span>
+<span class="w">  </span><span class="nt">train_sample_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;alldiscard&quot;</span><span class="w">    </span><span class="c1"># sample mode after train rollout: [&quot;allkeep&quot;, &quot;alldiscard&quot;, &quot;hybrid&quot;]</span>
+<span class="w">  </span><span class="nt">train_sample_keepratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">     </span><span class="c1"># task-level ratio for keeping experience</span>
+<span class="w">  </span><span class="nt">experience_template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;\n\nSome</span><span class="nv"> </span><span class="s">Related</span><span class="nv"> </span><span class="s">Experience</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">help</span><span class="nv"> </span><span class="s">you</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">task:&lt;EXP&gt;{}&lt;/EXP&gt;\n\n&quot;</span><span class="w">  </span><span class="c1"># template for inserting experience</span>
+<span class="w">  </span><span class="nt">init_exp_before_training</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w">  </span><span class="c1"># whether to init experience pool before training</span>
+<span class="w">  </span><span class="nt">init_exp_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w">  </span><span class="c1"># whether to only init experience pool</span>
+<span class="w">  </span><span class="nt">summary_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w">  </span><span class="c1"># batch size for experience summarization</span>
+<span class="w">  </span><span class="nt">reme</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://127.0.0.1:8001&quot;</span><span class="w">  </span><span class="c1"># base URL for ReMe service</span>
+<span class="w">    </span><span class="nt">workspace_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="w">  </span><span class="c1"># workspace ID for ReMe</span>
+<span class="w">    </span><span class="nt">enable_summarizer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w">  </span><span class="c1"># whether to enable experience summarizer</span>
+<span class="w">    </span><span class="nt">enable_context_generator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w">  </span><span class="c1"># whether to enable context generator</span>
+<span class="w">    </span><span class="nt">retrieve_top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w">  </span><span class="c1"># number of top experiences to retrieve</span>
+<span class="w">    </span><span class="nt">updated_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">   </span><span class="c1"># experience pool update frequency (in steps, 0=disabled)</span>
+</code></pre></div>
 
 <h3 id="step-3-understanding-different-usage-modes"><strong>Step 3: Understanding Different Usage Modes</strong></h3>
 <p>The experience pool system supports multiple usage modes to fit different experimental needs. Configure the parameters according to the table below:</p>
 <h4 id="mode-descriptions">Mode Descriptions</h4>
-<div class="table-wrapper"><table>
+<table>
 <thead>
 <tr>
 <th>Usage Mode</th>
@@ -903,9 +872,9 @@ reme \
 <td>Use an existing experience pool during training and continuously update it with new experiences</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <h4 id="configuration-matrix">Configuration Matrix</h4>
-<div class="table-wrapper"><table>
+<table>
 <thead>
 <tr>
 <th></th>
@@ -973,7 +942,7 @@ reme \
 <td>Exist ID</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <h4 id="configuration-notes">Configuration Notes</h4>
 <ul>
 <li>
@@ -991,7 +960,8 @@ reme \
 <p><strong>Recommended starting point</strong>: For most use cases, we recommend starting with <strong><code>Init + Train</code></strong> mode.</p>
 </li>
 </ul>
-  </div>
+
+    </div>
 </article>
                                 <div class="mx-auto flex flex-wrap h-16 w-full max-w-2xl items-center gap-2 px-4 md:px-0">
     
@@ -1005,14 +975,14 @@ reme \
             <path d="M5 12l6 6"></path>
             <path d="M5 12l6 -6"></path>
         </svg>
-        <span class="max-[500px]:hidden">Task Manager</span>
+        Task Manager
     </a>
     
     
     <a data-slot="button"
         class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 ml-auto shadow-none"
         href="/AgentEvolver/guidelines/adv_processor/">
-        <span class="max-[500px]:hidden">Advantage Processor</span>
+        Advantage Processor
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="tabler-icon tabler-icon-arrow-right ">

@@ -143,6 +143,7 @@
                     
 
 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37q.159.666.16 1.38a6 6 0 0 1-6 6v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.9 14.9 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.9 14.9 0 0 0-2.58 5.84m2.699 2.7q-.155.032-.311.06a15 15 0 0 1-2.448-2.448l.06-.312m-2.24 2.39a4.49 4.49 0 0 0-1.757 4.306q.341.054.696.054a4.5 4.5 0 0 0 3.61-1.812M16.5 9a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"/></svg>
+<!-- <iconify-icon class="size-5" icon="heroicons:rocket-launch" noobserver></iconify-icon> -->
 
 
                 </span>
@@ -454,88 +455,56 @@
                         <div data-slot="docs" class="flex items-stretch text-[1.05rem] sm:text-[15px] xl:w-full">
                             <div class="flex min-w-0 flex-1 flex-col">
                                 <div class="h-(--top-spacing) shrink-0"></div>
-                                <article class="w-full" view-transition-name="page">
-  <div class="flex flex-col gap-2">
+                                <article class=" w-full" view-transition-name="page">
     <div class="flex flex-col gap-2">
-      <div id="page-header" class="flex items-start justify-between">
-        <h1
-          class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-        >
-          Task Manager
-        </h1>
+        <div class="flex flex-col gap-2">
+            <div id="page-header" class="flex items-start justify-between">
 
-        <div class="flex items-center gap-2 pt-1.5">
-          
-<button onclick="fetch(`https://modelscope.github.io/AgentEvolver/guidelines/task_manager.md`).then((r) => r.blob()).then((blob) => navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]))" 
-        data-slot="button" 
-        class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md gap-1.5 px-3 has-[&>svg]:px-2.5 h-8 shadow-none md:h-7 md:text-[0.8rem]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-copy ">
-    <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
-</svg>
-<span class="max-md:hidden">Copy Page</span>
-</button> 
-          
-          <a
-            data-slot="button"
-            id="previous-button"
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
-            href="/AgentEvolver/guidelines/env_service/"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="tabler-icon tabler-icon-arrow-left"
-            >
-              <path d="M5 12l14 0"></path>
-              <path d="M5 12l6 6"></path>
-              <path d="M5 12l6 -6"></path>
-            </svg>
-            <span class="sr-only">Previous</span>
-          </a>
-           
-          
-          <a
-            data-slot="button"
-            id="next-button"
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
-            href="/AgentEvolver/guidelines/exp_manager/"
-          >
-            <span class="sr-only">Next</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="tabler-icon tabler-icon-arrow-right"
-            >
-              <path d="M5 12l14 0"></path>
-              <path d="M13 18l6 -6"></path>
-              <path d="M13 6l6 6"></path>
-            </svg>
-          </a>
-          
+                <h1 class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+                    Task Manager
+                </h1>
+
+                <div class="flex items-center gap-2 pt-1.5">
+                    
+                    <a data-slot="button" id="previous-button"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
+                        href="/AgentEvolver/guidelines/env_service/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="tabler-icon tabler-icon-arrow-left ">
+                            <path d="M5 12l14 0"></path>
+                            <path d="M5 12l6 6"></path>
+                            <path d="M5 12l6 -6"></path>
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    
+                    
+                    <a data-slot="button" id="next-button"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
+                        href="/AgentEvolver/guidelines/exp_manager/">
+                        <span class="sr-only">Next</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="tabler-icon tabler-icon-arrow-right ">
+                            <path d="M5 12l14 0"></path>
+                            <path d="M13 18l6 -6"></path>
+                            <path d="M13 6l6 6"></path>
+                        </svg>
+                    </a>
+                    
+                </div>
+            </div>
+            
         </div>
-      </div>
-      
+        <div class="flex justify-end items-center">
+            
+            
+        </div>
+
     </div>
-    <div class="flex justify-end items-center">
-       
-    </div>
-  </div>
-  <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
-    <p>To evolve an agent in a data-driven manner within your own environment, the first step is to collect training data that maps the agent's abilities to your requirements.</p>
+    <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
+        <p>To evolve an agent in a data-driven manner within your own environment, the first step is to collect training data that maps the agent's abilities to your requirements.</p>
 <p>Task Manager provides the training data for AgentEvolver. It is responsible for:</p>
 <ul>
 <li>Exploring unknown environments and profiling potential tasks,  </li>
@@ -565,47 +534,47 @@
 </ul>
 <p>Additionally, the Environment Profile defines <strong>task preferences</strong>, which control the style and scope of the generated tasks.</p>
 <p>A basic Environment Profile example is shown below:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;background&quot;: &quot;A general user working with a file system.&quot;,
-  &quot;entities&quot;: [
-    {
-      &quot;name&quot;: &quot;file&quot;,
-      &quot;description&quot;: &quot;A file in a file system.&quot;,
-      &quot;attrs&quot;: {
-        &quot;name&quot;: &quot;The name of the file.&quot;,
-        &quot;size&quot;: &quot;The size of the file in bytes.&quot;,
-        &quot;type&quot;: &quot;The type of the file, e.g. text, image, video, etc.&quot;,
-        &quot;parent&quot;: &quot;The parent directory of the file.&quot;
-      },
-      &quot;opts&quot;: [
-        { &quot;name&quot;: &quot;create&quot;, &quot;description&quot;: &quot;Create a new file.&quot; },
-        { &quot;name&quot;: &quot;delete&quot;, &quot;description&quot;: &quot;Delete a file.&quot; },
-        { &quot;name&quot;: &quot;read&quot;, &quot;description&quot;: &quot;Read a file.&quot; },
-        { &quot;name&quot;: &quot;write&quot;, &quot;description&quot;: &quot;Write to a file.&quot; }
-      ]
-    },
-    {
-      &quot;name&quot;: &quot;directory&quot;,
-      &quot;description&quot;: &quot;A directory in a file system.&quot;,
-      &quot;attrs&quot;: {
-        &quot;name&quot;: &quot;The name of the directory.&quot;,
-        &quot;parent&quot;: &quot;The parent directory of the directory.&quot;
-      },
-      &quot;opts&quot;: [
-        { &quot;name&quot;: &quot;create&quot;, &quot;description&quot;: &quot;Create a new directory.&quot; },
-        { &quot;name&quot;: &quot;delete&quot;, &quot;description&quot;: &quot;Delete a directory.&quot; },
-        { &quot;name&quot;: &quot;list&quot;, &quot;description&quot;: &quot;List the contents of a directory.&quot; }
-      ]
-    }
-  ],
-  &quot;task_preference&quot;: {
-    &quot;num_entities&quot;: 2,
-    &quot;num_opts&quot;: 3,
-    &quot;relation_difficulty&quot;: 3
-  }
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;background&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A general user working with a file system.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A file in a file system.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attrs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The name of the file.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The size of the file in bytes.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The type of the file, e.g. text, image, video, etc.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;parent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The parent directory of the file.&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create a new file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;delete&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delete a file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;read&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Read a file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;write&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Write to a file.&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;directory&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A directory in a file system.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attrs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The name of the directory.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;parent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The parent directory of the directory.&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create a new directory.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;delete&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delete a directory.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;list&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List the contents of a directory.&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;task_preference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;num_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relation_difficulty&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>In this profile, entities <code>file</code> and <code>directory</code> are defined with attributes (<code>name</code>, <code>size</code>, <code>type</code>, <code>parent</code>) and operations (<code>create</code>, <code>delete</code>, <code>read</code>, <code>write</code>, <code>list</code>). Based on these definitions, Task Manager gains a structured understanding of the environment to support task derivation and curation.</p>
 <p>To create your own Environment Profile, copy the template <code>environment_profile_template.json</code> to <code>environment_profile.json</code> and fill in the details. Using an LLM to assist in drafting the profile can reduce manual effort.</p>
@@ -619,45 +588,45 @@
 <li><em>DeduplicationFilter</em>, <em>FeasibilityFilter</em>, and <em>UnifiedMixtureStrategy</em> for task curation.</li>
 </ul>
 <p>These can be configured in the YAML configuration file. After configuring strategies, the whole configuration file looks like this:</p>
-<pre class="codehilite"><code class="language-yaml">task_manager:
-  # tasks will be explored once if set. use it if you want to keep the same explorations.
-  train_data_path: tasks_explored.train.json
-  val_data_path: tasks_explored.val.json
-  # model used to explore the environment
-  llm_client: qwen-plus
-  # repetation of exploration
-  n: 0
-  # env profiles used in exploration
-  env_profile: cookbook/env_profiles/appworld.json
-  # batch size of dynamic synthetic data
-  bs: ${data.train_batch_size} # use the same batch size as train_batch_size
-  # number of threads for exploration
-  num_explore_threads: 16
+<div class="codehilite"><pre><span></span><code><span class="nt">task_manager</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># tasks will be explored once if set. use it if you want to keep the same explorations.</span>
+<span class="w">  </span><span class="nt">train_data_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tasks_explored.train.json</span>
+<span class="w">  </span><span class="nt">val_data_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tasks_explored.val.json</span>
+<span class="w">  </span><span class="c1"># model used to explore the environment</span>
+<span class="w">  </span><span class="nt">llm_client</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qwen-plus</span>
+<span class="w">  </span><span class="c1"># repetation of exploration</span>
+<span class="w">  </span><span class="nt">n</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="c1"># env profiles used in exploration</span>
+<span class="w">  </span><span class="nt">env_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cookbook/env_profiles/appworld.json</span>
+<span class="w">  </span><span class="c1"># batch size of dynamic synthetic data</span>
+<span class="w">  </span><span class="nt">bs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${data.train_batch_size}</span><span class="w"> </span><span class="c1"># use the same batch size as train_batch_size</span>
+<span class="w">  </span><span class="c1"># number of threads for exploration</span>
+<span class="w">  </span><span class="nt">num_explore_threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
 
-  # mixture strategy
-  mixture:
-    # whether to use original tasks provided by the environment
-    use_original_tasks: True
-    synthetic_data_ratio: 0.0
-    # whether to shuffle tasks *after* mixture
-    shuffle: True
+<span class="w">  </span><span class="c1"># mixture strategy</span>
+<span class="w">  </span><span class="nt">mixture</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># whether to use original tasks provided by the environment</span>
+<span class="w">    </span><span class="nt">use_original_tasks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">    </span><span class="nt">synthetic_data_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">    </span><span class="c1"># whether to shuffle tasks *after* mixture</span>
+<span class="w">    </span><span class="nt">shuffle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 
-  # the grader used to evaluate tasks
-  grader:
-    # grader used to evaluate tasks: env, llm
-    original_grader: env
-    synthetic_grader: llm
+<span class="w">  </span><span class="c1"># the grader used to evaluate tasks</span>
+<span class="w">  </span><span class="nt">grader</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># grader used to evaluate tasks: env, llm</span>
+<span class="w">    </span><span class="nt">original_grader</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env</span>
+<span class="w">    </span><span class="nt">synthetic_grader</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llm</span>
 
-  # strategy used to explore the environment
-  strategy: random
-  strategy_args:
-    max_explore_step: 30
-    max_llm_retries: 6
-    env_url: ${env_service.env_url} # refer to env_service.env_url
-    exploration_llm_temperature: 1.0
-    exploration_llm_top_p: 1.0
-    exploration_llm_top_k: 100
-</code></pre>
+<span class="w">  </span><span class="c1"># strategy used to explore the environment</span>
+<span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random</span>
+<span class="w">  </span><span class="nt">strategy_args</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">max_explore_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">max_llm_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">    </span><span class="nt">env_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env_service.env_url}</span><span class="w"> </span><span class="c1"># refer to env_service.env_url</span>
+<span class="w">    </span><span class="nt">exploration_llm_temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">exploration_llm_top_p</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">exploration_llm_top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</code></pre></div>
 
 <h3 id="4-start-task-synthesis">4. Start Task Synthesis</h3>
 <p>Once configuration is complete, task synthesis can be initiated.</p>
@@ -668,8 +637,8 @@
 <h4 id="standalone-mode">Standalone Mode</h4>
 <p>Task Manager can be executed in standalone mode for simple task synthesis.</p>
 <p>Example command:</p>
-<pre class="codehilite"><code class="language-bash">$ python -m agentevolver.module.task_manager
-</code></pre>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>agentevolver.module.task_manager
+</code></pre></div>
 
 <p>The synthesis progress will be displayed. When the process completes, the path to the generated tasks will be printed.</p>
 <h4 id="integrated-mode">Integrated Mode</h4>
@@ -680,11 +649,11 @@
 </div>
 <h3 id="5-check-the-data">5. Check the Data</h3>
 <p>The generated synthetic tasks are stored in the path specified in the YAML configuration file.</p>
-<pre class="codehilite"><code class="language-yaml">task_manager:
-  # where to save the generated tasks
-  train_data_path: tasks_explored.train.json # tasks will be explored once if set. use it if you want to keep the same explorations.
-  val_data_path: tasks_explored.val.json # tasks will be explored once if set. use it if you want to keep the same explorations.
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nt">task_manager</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># where to save the generated tasks</span>
+<span class="w">  </span><span class="nt">train_data_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tasks_explored.train.json</span><span class="w"> </span><span class="c1"># tasks will be explored once if set. use it if you want to keep the same explorations.</span>
+<span class="w">  </span><span class="nt">val_data_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tasks_explored.val.json</span><span class="w"> </span><span class="c1"># tasks will be explored once if set. use it if you want to keep the same explorations.</span>
+</code></pre></div>
 
 <div class="admonition note">
 <p class="admonition-title">Dynamic vs Static</p>
@@ -725,19 +694,19 @@
 <li><strong>Operations</strong>: Specify the actions that can be applied to the entity.</li>
 </ul>
 <p>For example:</p>
-<pre class="codehilite"><code>Entity: File
-Attributes
-    - name: The name of the file.
-    - size: The size of the file in bytes.
-    - type: The type of the file, e.g. text, image, video, etc.
-    - permission: The permission of the file.
-Operations
-    - create: Create a new file.
-    - delete: Delete a file.
-    - read: Read a file.
-    - write: Write to a file.
-    - chmod: Change the permission of a file.
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">Entity</span><span class="o">:</span><span class="w"> </span><span class="n">File</span>
+<span class="n">Attributes</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">size</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">bytes</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="o">,</span><span class="w"> </span><span class="n">e</span><span class="o">.</span><span class="na">g</span><span class="o">.</span><span class="w"> </span><span class="n">text</span><span class="o">,</span><span class="w"> </span><span class="n">image</span><span class="o">,</span><span class="w"> </span><span class="n">video</span><span class="o">,</span><span class="w"> </span><span class="n">etc</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">permission</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="n">Operations</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">create</span><span class="o">:</span><span class="w"> </span><span class="n">Create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">delete</span><span class="o">:</span><span class="w"> </span><span class="n">Delete</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">read</span><span class="o">:</span><span class="w"> </span><span class="n">Read</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">write</span><span class="o">:</span><span class="w"> </span><span class="n">Write</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">chmod</span><span class="o">:</span><span class="w"> </span><span class="n">Change</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">permission</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">file</span><span class="o">.</span>
+</code></pre></div>
 
 <p>The granularity of a profile is flexible. With the assistance of LLMs, profiles can be constructed at multiple levels, ranging from a single generic entity to highly specialized entities. The choice of granularity is a trade-off between manual specification and the capability of the LLM to generalize.</p>
 <p>Task Manager leverages the Environment Profile to recognize concepts, explore relationships between entities, and synthesize meaningful tasks. Operations are combined to form candidate solutions reflecting real-world problem-solving.</p>
@@ -745,127 +714,127 @@ Operations
 <h3 id="write-a-profile">Write a Profile</h3>
 <p>Profiles can be specified in <strong>JSON</strong> (recommended) or in <strong>Python</strong>.</p>
 <p>Top-level structure:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;name&quot;: string,
-  &quot;background&quot;: string,
-  &quot;entities&quot;: [ ... ],
-  &quot;task_preference&quot;: {
-    &quot;num_entities&quot;: integer,
-    &quot;num_opts&quot;: integer,
-    &quot;relation_difficulty&quot;: integer
-  }
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;background&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;task_preference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;num_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">i</span><span class="kc">nte</span><span class="err">ger</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">i</span><span class="kc">nte</span><span class="err">ger</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relation_difficulty&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">i</span><span class="kc">nte</span><span class="err">ger</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>Example entity definition:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;name&quot;: &quot;file&quot;,
-  &quot;description&quot;: &quot;A file in a file system.&quot;,
-  &quot;attrs&quot;: {
-    &quot;name&quot;: &quot;The name of the file.&quot;
-  },
-  &quot;opts&quot;: [
-    { &quot;name&quot;: &quot;create&quot;, &quot;description&quot;: &quot;Create a new file.&quot; }
-  ]
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A file in a file system.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;attrs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The name of the file.&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create a new file.&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>A minimal working example:</p>
-<pre class="codehilite"><code class="language-json">{
-  &quot;name&quot;: &quot;Alice&quot;,
-  &quot;background&quot;: &quot;A general user working with a file system.&quot;,
-  &quot;entities&quot;: [
-    {
-      &quot;name&quot;: &quot;file&quot;,
-      &quot;description&quot;: &quot;A file in a file system.&quot;,
-      &quot;attrs&quot;: {
-        &quot;name&quot;: &quot;The name of the file.&quot;,
-        &quot;size&quot;: &quot;The size of the file in bytes.&quot;,
-        &quot;type&quot;: &quot;The type of the file (e.g., text, image, video).&quot;,
-        &quot;parent&quot;: &quot;The parent directory of the file.&quot;
-      },
-      &quot;opts&quot;: [
-        { &quot;name&quot;: &quot;create&quot;, &quot;description&quot;: &quot;Create a new file.&quot; },
-        { &quot;name&quot;: &quot;delete&quot;, &quot;description&quot;: &quot;Delete a file.&quot; },
-        { &quot;name&quot;: &quot;read&quot;, &quot;description&quot;: &quot;Read a file.&quot; },
-        { &quot;name&quot;: &quot;write&quot;, &quot;description&quot;: &quot;Write to a file.&quot; }
-      ]
-    },
-    {
-      &quot;name&quot;: &quot;directory&quot;,
-      &quot;description&quot;: &quot;A directory in a file system.&quot;,
-      &quot;attrs&quot;: {
-        &quot;name&quot;: &quot;The name of the directory.&quot;,
-        &quot;parent&quot;: &quot;The parent directory of the directory.&quot;
-      },
-      &quot;opts&quot;: [
-        { &quot;name&quot;: &quot;create&quot;, &quot;description&quot;: &quot;Create a new directory.&quot; },
-        { &quot;name&quot;: &quot;delete&quot;, &quot;description&quot;: &quot;Delete a directory.&quot; },
-        { &quot;name&quot;: &quot;list&quot;, &quot;description&quot;: &quot;List the contents of a directory.&quot; }
-      ]
-    }
-  ],
-  &quot;task_preference&quot;: {
-    &quot;num_entities&quot;: 2,
-    &quot;num_opts&quot;: 3,
-    &quot;relation_difficulty&quot;: 3
-  }
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;background&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A general user working with a file system.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A file in a file system.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attrs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The name of the file.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The size of the file in bytes.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The type of the file (e.g., text, image, video).&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;parent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The parent directory of the file.&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create a new file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;delete&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delete a file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;read&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Read a file.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;write&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Write to a file.&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;directory&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A directory in a file system.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attrs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The name of the directory.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;parent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The parent directory of the directory.&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create a new directory.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;delete&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delete a directory.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;list&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List the contents of a directory.&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;task_preference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;num_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;num_opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;relation_difficulty&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>For examples in real environments, please refer to <code>cookbook</code> in the root directory.</p>
 <p>If Python is preferred, an example is</p>
-<pre class="codehilite"><code class="language-python">from agentevolver.module.task_manager.env_profiles import EnvEntity, EnvEntityOpt, TaskPreference, EnvProfile
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agentevolver.module.task_manager.env_profiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnvEntity</span><span class="p">,</span> <span class="n">EnvEntityOpt</span><span class="p">,</span> <span class="n">TaskPreference</span><span class="p">,</span> <span class="n">EnvProfile</span>
 
-spotify = EnvEntity(
-    name=&quot;Spotify&quot;,
-    description=&quot;A music streaming service with song, album, and playlist management.&quot;,
-    attrs={
-        &quot;Song Library&quot;: &quot;Songs saved by the user.&quot;,
-        &quot;Album Library&quot;: &quot;Albums saved by the user.&quot;,
-        &quot;Playlists&quot;: &quot;User-created or followed playlists.&quot;
-    },
-    opts=[
-        EnvEntityOpt(&quot;play_song&quot;, &quot;Play a song, album, or playlist.&quot;),
-        EnvEntityOpt(&quot;like_song&quot;, &quot;Like songs or albums.&quot;),
-        EnvEntityOpt(&quot;unfollow_artist&quot;, &quot;Unfollow an artist.&quot;),
-        EnvEntityOpt(&quot;follow_artist&quot;, &quot;Follow an artist.&quot;),
-        EnvEntityOpt(&quot;create_playlist&quot;, &quot;Create a new playlist.&quot;),
-        EnvEntityOpt(&quot;remove_song&quot;, &quot;Remove songs from library or playlist.&quot;),
-        EnvEntityOpt(&quot;export_library&quot;, &quot;Export song/album/playlist data.&quot;)
-    ]
-)
+<span class="n">spotify</span> <span class="o">=</span> <span class="n">EnvEntity</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Spotify&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A music streaming service with song, album, and playlist management.&quot;</span><span class="p">,</span>
+    <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Song Library&quot;</span><span class="p">:</span> <span class="s2">&quot;Songs saved by the user.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Album Library&quot;</span><span class="p">:</span> <span class="s2">&quot;Albums saved by the user.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Playlists&quot;</span><span class="p">:</span> <span class="s2">&quot;User-created or followed playlists.&quot;</span>
+    <span class="p">},</span>
+    <span class="n">opts</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;play_song&quot;</span><span class="p">,</span> <span class="s2">&quot;Play a song, album, or playlist.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;like_song&quot;</span><span class="p">,</span> <span class="s2">&quot;Like songs or albums.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;unfollow_artist&quot;</span><span class="p">,</span> <span class="s2">&quot;Unfollow an artist.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;follow_artist&quot;</span><span class="p">,</span> <span class="s2">&quot;Follow an artist.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;create_playlist&quot;</span><span class="p">,</span> <span class="s2">&quot;Create a new playlist.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;remove_song&quot;</span><span class="p">,</span> <span class="s2">&quot;Remove songs from library or playlist.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;export_library&quot;</span><span class="p">,</span> <span class="s2">&quot;Export song/album/playlist data.&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
-gmail = EnvEntity(
-    name=&quot;Gmail&quot;,
-    description=&quot;An email service for sending, receiving, labeling, and managing emails.&quot;,
-    attrs={
-        &quot;Inbox&quot;: &quot;List of received email threads.&quot;,
-        &quot;Outbox&quot;: &quot;List of sent email threads.&quot;,
-        &quot;Labels&quot;: &quot;Custom labels to organize emails.&quot;
-    },
-    opts=[
-        EnvEntityOpt(&quot;send_email&quot;, &quot;Send an email.&quot;),
-        EnvEntityOpt(&quot;forward_email&quot;, &quot;Forward an email.&quot;),
-        EnvEntityOpt(&quot;reply_email&quot;, &quot;Reply to an email.&quot;),
-        EnvEntityOpt(&quot;delete_email&quot;, &quot;Delete emails.&quot;),
-        EnvEntityOpt(&quot;label_email&quot;, &quot;Label emails.&quot;),
-        EnvEntityOpt(&quot;star_email&quot;, &quot;Star or unstar email threads.&quot;)
-    ]
-)
+<span class="n">gmail</span> <span class="o">=</span> <span class="n">EnvEntity</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Gmail&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An email service for sending, receiving, labeling, and managing emails.&quot;</span><span class="p">,</span>
+    <span class="n">attrs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Inbox&quot;</span><span class="p">:</span> <span class="s2">&quot;List of received email threads.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Outbox&quot;</span><span class="p">:</span> <span class="s2">&quot;List of sent email threads.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Labels&quot;</span><span class="p">:</span> <span class="s2">&quot;Custom labels to organize emails.&quot;</span>
+    <span class="p">},</span>
+    <span class="n">opts</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;send_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Send an email.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;forward_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Forward an email.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;reply_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Reply to an email.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;delete_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Delete emails.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;label_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Label emails.&quot;</span><span class="p">),</span>
+        <span class="n">EnvEntityOpt</span><span class="p">(</span><span class="s2">&quot;star_email&quot;</span><span class="p">,</span> <span class="s2">&quot;Star or unstar email threads.&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
-env_profile = EnvProfile(
-    name=&quot;Bob&quot;,
-    background=&quot;A general computer user.&quot;,
-    task=TaskPreference(
-        num_entities=2,
-        num_opts=3,
-        relation_difficulty=3,
-    )
-)
+<span class="n">env_profile</span> <span class="o">=</span> <span class="n">EnvProfile</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+    <span class="n">background</span><span class="o">=</span><span class="s2">&quot;A general computer user.&quot;</span><span class="p">,</span>
+    <span class="n">task</span><span class="o">=</span><span class="n">TaskPreference</span><span class="p">(</span>
+        <span class="n">num_entities</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">num_opts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">relation_difficulty</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-env_profile.reg_entities([spotify, gmail])
-</code></pre>
+<span class="n">env_profile</span><span class="o">.</span><span class="n">reg_entities</span><span class="p">([</span><span class="n">spotify</span><span class="p">,</span> <span class="n">gmail</span><span class="p">])</span>
+</code></pre></div>
 
 <p>More examples can be found in <code>agentevolver/module/task_manager/prelude_profiles</code>.</p>
 <h2 id="task-derivation">Task Derivation</h2>
@@ -883,16 +852,16 @@ env_profile.reg_entities([spotify, gmail])
 <h3 id="randomwalk-strategy">RandomWalk Strategy</h3>
 <p>The RandomWalk Strategy is simple yet effective. It explores the environment by sampling entities and operations at random, generating diverse trajectories that can be summarized into tasks.</p>
 <p>Parameters:</p>
-<pre class="codehilite"><code class="language-yaml">task_manager:
-  strategy: random
-  strategy_args:
-    max_explore_step: 30
-    max_llm_retries: 6
-    env_url: ${env_service.env_url} # refer to env_service.env_url
-    exploration_llm_temperature: 1.0
-    exploration_llm_top_p: 1.0
-    exploration_llm_top_k: 100
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nt">task_manager</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">random</span>
+<span class="w">  </span><span class="nt">strategy_args</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">max_explore_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">max_llm_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">    </span><span class="nt">env_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env_service.env_url}</span><span class="w"> </span><span class="c1"># refer to env_service.env_url</span>
+<span class="w">    </span><span class="nt">exploration_llm_temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">exploration_llm_top_p</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">exploration_llm_top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</code></pre></div>
 
 <h2 id="task-curation">Task Curation</h2>
 <p>Task Curation ensures the quality and diversity of tasks generated during derivation by applying filters and mixture strategies.</p>
@@ -939,15 +908,16 @@ env_profile.reg_entities([spotify, gmail])
 <p>Although the built-in synthetic reward provides a functional fallback, we strongly recommend implementing domain-specific reward functions to achieve optimal agent performance.</p>
 </blockquote>
 <p>Configuration example:</p>
-<pre class="codehilite"><code class="language-yaml">task_manager:
-  grader:
-    original_grader: env
-    synthetic_grader: llm
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nt">task_manager</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">grader</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">original_grader</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env</span>
+<span class="w">    </span><span class="nt">synthetic_grader</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llm</span>
+</code></pre></div>
 
 <h2 id="extend-task-manager">Extend Task Manager</h2>
 <p>Task Manager is designed as a <strong>modular and extensible framework</strong>, adaptable to different training scenarios. To extend Task Manager, users can implement and replace the components used in three stages in the pipeline, including <strong>Strategy</strong>, <strong>Filter</strong>, <strong>Mixture Strategy</strong>, and <strong>Judge</strong>.</p>
-  </div>
+
+    </div>
 </article>
                                 <div class="mx-auto flex flex-wrap h-16 w-full max-w-2xl items-center gap-2 px-4 md:px-0">
     
@@ -961,14 +931,14 @@ env_profile.reg_entities([spotify, gmail])
             <path d="M5 12l6 6"></path>
             <path d="M5 12l6 -6"></path>
         </svg>
-        <span class="max-[500px]:hidden">Environment Service</span>
+        Environment Service
     </a>
     
     
     <a data-slot="button"
         class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 h-8 rounded-md gap-1.5 px-3 has-[&gt;svg]:px-2.5 ml-auto shadow-none"
         href="/AgentEvolver/guidelines/exp_manager/">
-        <span class="max-[500px]:hidden">Experience Manager</span>
+        Experience Manager
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="tabler-icon tabler-icon-arrow-right ">

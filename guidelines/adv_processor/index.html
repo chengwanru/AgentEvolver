@@ -143,6 +143,7 @@
                     
 
 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37q.159.666.16 1.38a6 6 0 0 1-6 6v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.9 14.9 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.9 14.9 0 0 0-2.58 5.84m2.699 2.7q-.155.032-.311.06a15 15 0 0 1-2.448-2.448l.06-.312m-2.24 2.39a4.49 4.49 0 0 0-1.757 4.306q.341.054.696.054a4.5 4.5 0 0 0 3.61-1.812M16.5 9a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"/></svg>
+<!-- <iconify-icon class="size-5" icon="heroicons:rocket-launch" noobserver></iconify-icon> -->
 
 
                 </span>
@@ -454,63 +455,43 @@
                         <div data-slot="docs" class="flex items-stretch text-[1.05rem] sm:text-[15px] xl:w-full">
                             <div class="flex min-w-0 flex-1 flex-col">
                                 <div class="h-(--top-spacing) shrink-0"></div>
-                                <article class="w-full" view-transition-name="page">
-  <div class="flex flex-col gap-2">
+                                <article class=" w-full" view-transition-name="page">
     <div class="flex flex-col gap-2">
-      <div id="page-header" class="flex items-start justify-between">
-        <h1
-          class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-        >
-          Advantage Processor
-        </h1>
+        <div class="flex flex-col gap-2">
+            <div id="page-header" class="flex items-start justify-between">
 
-        <div class="flex items-center gap-2 pt-1.5">
-          
-<button onclick="fetch(`https://modelscope.github.io/AgentEvolver/guidelines/adv_processor.md`).then((r) => r.blob()).then((blob) => navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]))" 
-        data-slot="button" 
-        class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md gap-1.5 px-3 has-[&>svg]:px-2.5 h-8 shadow-none md:h-7 md:text-[0.8rem]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-copy ">
-    <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
-</svg>
-<span class="max-md:hidden">Copy Page</span>
-</button> 
-          
-          <a
-            data-slot="button"
-            id="previous-button"
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
-            href="/AgentEvolver/guidelines/exp_manager/"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="tabler-icon tabler-icon-arrow-left"
-            >
-              <path d="M5 12l14 0"></path>
-              <path d="M5 12l6 6"></path>
-              <path d="M5 12l6 -6"></path>
-            </svg>
-            <span class="sr-only">Previous</span>
-          </a>
-           
-          
+                <h1 class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+                    Advantage Processor
+                </h1>
+
+                <div class="flex items-center gap-2 pt-1.5">
+                    
+                    <a data-slot="button" id="previous-button"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 extend-touch-target size-8 shadow-none md:size-7"
+                        href="/AgentEvolver/guidelines/exp_manager/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="tabler-icon tabler-icon-arrow-left ">
+                            <path d="M5 12l14 0"></path>
+                            <path d="M5 12l6 6"></path>
+                            <path d="M5 12l6 -6"></path>
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    
+                    
+                </div>
+            </div>
+            
         </div>
-      </div>
-      
+        <div class="flex justify-end items-center">
+            
+            
+        </div>
+
     </div>
-    <div class="flex justify-end items-center">
-       
-    </div>
-  </div>
-  <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
-    <h2 id="overview">Overview</h2>
+    <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
+        <h2 id="overview">Overview</h2>
 <p>The <strong>Advantage Processor</strong> is one of core components of the AgentEvolver framework, responsible for implementing the <strong><code>self-attributing</code></strong> mechanism. Traditional reinforcement learning methods face the <strong>credit assignment problem</strong> in long-horizon tasks: they cannot distinguish which actions in a trajectory are valuable versus unproductive, leading to inefficient learning. The Self-Attributing mechanism addresses this by leveraging LLM's causal reasoning capabilities to decompose learning signals into <strong>process quality</strong> (logical correctness of actions) and <strong>outcome effectiveness</strong> (final success), enabling precise step-wise credit assignment.</p>
 <h3 id="core-implementation-adca-grpo"><strong>Core Implementation: ADCA-GRPO</strong></h3>
 <p>The primary implementation of the Advantage Processor is <strong>ADCA-GRPO</strong>. ADCA-GRPO uses a powerful LLM to perform causal analysis on trajectories, assigning an <strong>attribution signal (GOOD/BAD)</strong> to each step. This signal is then combined with the traditional outcome signal to produce a fine-grained advantage, leading to significantly improved sample efficiency. Experimental results demonstrate that ADCA-GRPO achieves approximately 10% performance improvement and 40% reduction in training steps compared to traditional GRPO methods.</p>
@@ -525,17 +506,17 @@
 <ul>
 <li><strong>Key Function</strong>: <code>evaluate_step_flags_parallel_sync</code> (from <code>semantic_attribution.py</code>)</li>
 </ul>
-<pre class="codehilite"><code class="language-python"># From: semantic_attribution.py
+<div class="codehilite"><pre><span></span><code><span class="c1"># From: semantic_attribution.py</span>
 
-async def evaluate_step_flags_parallel(
-    tokenizer,
-    batch,
-    overall_score_source: str = &quot;advantages&quot;,
-    model_name: str = &quot;qwen-max&quot;,
-    # ... other parameters
-) -&gt; Tuple[List[List[bool]], Dict]:
-    ...
-</code></pre>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_step_flags_parallel</span><span class="p">(</span>
+    <span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">,</span>
+    <span class="n">overall_score_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;advantages&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;qwen-max&quot;</span><span class="p">,</span>
+    <span class="c1"># ... other parameters</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">]:</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 <p>This function orchestrates the evaluation process:</p>
 <ol>
@@ -551,32 +532,32 @@ async def evaluate_step_flags_parallel(
 <ul>
 <li><strong>Key Function</strong>: <code>compute_prm_grpo_advantages</code> (from <code>adca_grpo.py</code>)</li>
 </ul>
-<pre class="codehilite"><code class="language-python"># From: adca_grpo.py
+<div class="codehilite"><pre><span></span><code><span class="c1"># From: adca_grpo.py</span>
 
-def compute_prm_grpo_advantages(
-    batch,
-    step_flags: List[List[bool]],
-    hyper: Optional[PRMHyper] = None,
-    scheme: str = &quot;decouple&quot;,
-) -&gt; dict:
-    ...
-</code></pre>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_prm_grpo_advantages</span><span class="p">(</span>
+    <span class="n">batch</span><span class="p">,</span>
+    <span class="n">step_flags</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]],</span>
+    <span class="n">hyper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PRMHyper</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scheme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;decouple&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 <p>For the recommended <code>"decouple"</code> scheme, this calls <code>_build_decouple</code>, which implements the core logic:</p>
 <ul>
 <li><strong>Utility Function</strong>: <code>_build_decouple</code> (from <code>adca_grpo.py</code>)</li>
 </ul>
-<pre class="codehilite"><code class="language-python"># From: adca_grpo.py
+<div class="codehilite"><pre><span></span><code><span class="c1"># From: adca_grpo.py</span>
 
-def _build_decouple(
-    orm_full_scores: torch.Tensor,
-    step_flags: List[List[bool]],
-    step_ids: torch.Tensor,
-    group_ids: torch.Tensor,
-    hyper: &quot;PRMHyper&quot;
-) -&gt; Tuple[List[List[float]], Dict]:
-    ...
-</code></pre>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_decouple</span><span class="p">(</span>
+    <span class="n">orm_full_scores</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">step_flags</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]],</span>
+    <span class="n">step_ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">group_ids</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">hyper</span><span class="p">:</span> <span class="s2">&quot;PRMHyper&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">]:</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 <p><strong>The decouple process:</strong></p>
 <ol>
@@ -647,59 +628,60 @@ def _build_decouple(
 <h2 id="quick-start-recommended-configuration">Quick Start &amp; Recommended Configuration 🚀</h2>
 <h3 id="step-1-set-environment-variable"><strong>Step 1: Set Environment Variable</strong></h3>
 <p>Before starting, ensure your API key is set in your terminal environment:</p>
-<pre class="codehilite"><code class="language-bash">export DASHSCOPE_API_KEY=&quot;sk-xxxxxxxxxxxxxxxxxxxxxxxx&quot;
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DASHSCOPE_API_KEY</span><span class="o">=</span><span class="s2">&quot;sk-xxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+</code></pre></div>
 
 <h3 id="step-2-recommended-configuration"><strong>Step 2: Recommended Configuration</strong></h3>
 <p>Here is a more complete and ready-to-use baseline configuration. It uses the stable <code>decouple</code> scheme and includes detailed settings for cost optimization and monitoring.</p>
-<pre class="codehilite"><code class="language-yaml"># Semantic evaluation &amp; ADCA-GRPO
-attribution_driven_credit_assignment:
-  # 1. Master switch
-  enable: true
+<div class="codehilite"><pre><span></span><code><span class="c1"># Semantic evaluation &amp; ADCA-GRPO</span>
+<span class="nt">attribution_driven_credit_assignment</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># 1. Master switch</span>
+<span class="w">  </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-  # 2. LLM Attribution Service settings
-  evaluation_type: &quot;api&quot;
-  model: &quot;qwen-max&quot;                # Recommend using a powerful model
-  concurrent: 10                    # Adjust based on your API QPS limits
-  api_max_retries: 200
-  llm_evaluation_log_dir: &quot;/path/to/your/logs&quot; # Strongly recommended for debugging
+<span class="w">  </span><span class="c1"># 2. LLM Attribution Service settings</span>
+<span class="w">  </span><span class="nt">evaluation_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;api&quot;</span>
+<span class="w">  </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qwen-max&quot;</span><span class="w">                </span><span class="c1"># Recommend using a powerful model</span>
+<span class="w">  </span><span class="nt">concurrent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">                    </span><span class="c1"># Adjust based on your API QPS limits</span>
+<span class="w">  </span><span class="nt">api_max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+<span class="w">  </span><span class="nt">llm_evaluation_log_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/your/logs&quot;</span><span class="w"> </span><span class="c1"># Strongly recommended for debugging</span>
 
-  # 3. ADCA-GRPO Core Algorithm settings
-  adca_grpo:
-    # Must be &quot;decouple&quot; for the most stable and validated scheme
-    prm_scheme: &quot;decouple&quot;
+<span class="w">  </span><span class="c1"># 3. ADCA-GRPO Core Algorithm settings</span>
+<span class="w">  </span><span class="nt">adca_grpo</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Must be &quot;decouple&quot; for the most stable and validated scheme</span>
+<span class="w">    </span><span class="nt">prm_scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;decouple&quot;</span>
 
-    # Must be true to ensure signal scale consistency and training stability
-    do_batch_norm: true
+<span class="w">    </span><span class="c1"># Must be true to ensure signal scale consistency and training stability</span>
+<span class="w">    </span><span class="nt">do_batch_norm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-    # Generally recommended to be true to ensure equal contribution from each trajectory
-    equal_trajectory_weight: true
+<span class="w">    </span><span class="c1"># Generally recommended to be true to ensure equal contribution from each trajectory</span>
+<span class="w">    </span><span class="nt">equal_trajectory_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-    # Base value for GOOD/BAD labels under the &quot;decouple&quot; scheme
-    fix_base: 0.2
+<span class="w">    </span><span class="c1"># Base value for GOOD/BAD labels under the &quot;decouple&quot; scheme</span>
+<span class="w">    </span><span class="nt">fix_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
 
-    # Key hyperparameter to tune; start with a small value (e.g., 0.05 ~ 0.2)
-    alpha: 0.1 # This corresponds to 'α' in the paper
+<span class="w">    </span><span class="c1"># Key hyperparameter to tune; start with a small value (e.g., 0.05 ~ 0.2)</span>
+<span class="w">    </span><span class="nt">alpha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"> </span><span class="c1"># This corresponds to &#39;α&#39; in the paper</span>
 
-    # Beta is implicitly 1.0 in the code and fixed in experiments
-    # beta: 1.0
+<span class="w">    </span><span class="c1"># Beta is implicitly 1.0 in the code and fixed in experiments</span>
+<span class="w">    </span><span class="c1"># beta: 1.0</span>
 
-    # Recommended to be &quot;last_step&quot; as it is more intuitive
-    orm_distribution: &quot;last_step&quot;
+<span class="w">    </span><span class="c1"># Recommended to be &quot;last_step&quot; as it is more intuitive</span>
+<span class="w">    </span><span class="nt">orm_distribution</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;last_step&quot;</span>
 
-    # Balance effectiveness and API cost; enables attribution for the first 20 epochs
-    prm_steps: 20
+<span class="w">    </span><span class="c1"># Balance effectiveness and API cost; enables attribution for the first 20 epochs</span>
+<span class="w">    </span><span class="nt">prm_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 
-    # Recommended to save API costs by not evaluating low-value trajectories
-    skip_type: &quot;skip_small_adv&quot;
+<span class="w">    </span><span class="c1"># Recommended to save API costs by not evaluating low-value trajectories</span>
+<span class="w">    </span><span class="nt">skip_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skip_small_adv&quot;</span>
 
-    # Recommended to be true to monitor the attribution module's internal state
-    enable_adca_metric: true
+<span class="w">    </span><span class="c1"># Recommended to be true to monitor the attribution module&#39;s internal state</span>
+<span class="w">    </span><span class="nt">enable_adca_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 
-    # Default is false; can be enabled for tasks with high variance in trajectory length
-    enable_length_normalization: false
-</code></pre>
-  </div>
+<span class="w">    </span><span class="c1"># Default is false; can be enabled for tasks with high variance in trajectory length</span>
+<span class="w">    </span><span class="nt">enable_length_normalization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+
+    </div>
 </article>
                                 <div class="mx-auto flex flex-wrap h-16 w-full max-w-2xl items-center gap-2 px-4 md:px-0">
     
@@ -713,7 +695,7 @@ attribution_driven_credit_assignment:
             <path d="M5 12l6 6"></path>
             <path d="M5 12l6 -6"></path>
         </svg>
-        <span class="max-[500px]:hidden">Experience Manager</span>
+        Experience Manager
     </a>
     
     

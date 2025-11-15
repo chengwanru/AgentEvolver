@@ -143,6 +143,7 @@
                     
 
 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37q.159.666.16 1.38a6 6 0 0 1-6 6v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.9 14.9 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.9 14.9 0 0 0-2.58 5.84m2.699 2.7q-.155.032-.311.06a15 15 0 0 1-2.448-2.448l.06-.312m-2.24 2.39a4.49 4.49 0 0 0-1.757 4.306q.341.054.696.054a4.5 4.5 0 0 0 3.61-1.812M16.5 9a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"/></svg>
+<!-- <iconify-icon class="size-5" icon="heroicons:rocket-launch" noobserver></iconify-icon> -->
 
 
                 </span>
@@ -454,38 +455,30 @@
                         <div data-slot="docs" class="flex items-stretch text-[1.05rem] sm:text-[15px] xl:w-full">
                             <div class="flex min-w-0 flex-1 flex-col">
                                 <div class="h-(--top-spacing) shrink-0"></div>
-                                <article class="w-full" view-transition-name="page">
-  <div class="flex flex-col gap-2">
+                                <article class=" w-full" view-transition-name="page">
     <div class="flex flex-col gap-2">
-      <div id="page-header" class="flex items-start justify-between">
-        <h1
-          class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl"
-        >
-          Launcher
-        </h1>
+        <div class="flex flex-col gap-2">
+            <div id="page-header" class="flex items-start justify-between">
 
-        <div class="flex items-center gap-2 pt-1.5">
-          
-<button onclick="fetch(`https://modelscope.github.io/AgentEvolver/launcher.md`).then((r) => r.blob()).then((blob) => navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]))" 
-        data-slot="button" 
-        class="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md gap-1.5 px-3 has-[&>svg]:px-2.5 h-8 shadow-none md:h-7 md:text-[0.8rem]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-copy ">
-    <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
-</svg>
-<span class="max-md:hidden">Copy Page</span>
-</button> 
-           
-          
+                <h1 class="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+                    Launcher
+                </h1>
+
+                <div class="flex items-center gap-2 pt-1.5">
+                    
+                    
+                </div>
+            </div>
+            
         </div>
-      </div>
-      
+        <div class="flex justify-end items-center">
+            
+            
+        </div>
+
     </div>
-    <div class="flex justify-end items-center">
-       
-    </div>
-  </div>
-  <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
-    <p>This document explains the usage, arguments, and workflow of <code>launcher.py</code>, the main entry point for launching and managing experiments in the AgentEvolver project.</p>
+    <div class="typography w-full flex-1 *:data-[slot=alert]:first:mt-0">
+        <p>This document explains the usage, arguments, and workflow of <code>launcher.py</code>, the main entry point for launching and managing experiments in the AgentEvolver project.</p>
 <h2 id="overview">Overview</h2>
 <p><code>launcher.py</code> is a command-line tool designed to:
 - Prepare experiment environments
@@ -495,8 +488,8 @@
 - Start the main training or evaluation process</p>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>Run the launcher with desired options. Example:</p>
-<pre class="codehilite"><code class="language-bash">python launcher.py --conf examples/self-question-nav-attr.yaml --python-killer --with-appworld --with-exp-maker --with-logview
-</code></pre>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>launcher.py<span class="w"> </span>--conf<span class="w"> </span>examples/self-question-nav-attr.yaml<span class="w"> </span>--python-killer<span class="w"> </span>--with-appworld<span class="w"> </span>--with-exp-maker<span class="w"> </span>--with-logview
+</code></pre></div>
 
 <p>Explaination:
 - <code>--conf</code>: Choose a experiment yaml to launch training (the primary argument).
@@ -505,7 +498,7 @@
 - <code>--with-exp-maker</code>: Let the launcher help you start <code>ReMe</code> environment service (persistent and can avoid re-launching).
 - <code>--with-logview</code>: Open rollout log viewer. If you are using VSCode, a browser windows will pop out automatically.</p>
 <h2 id="command-line-arguments">Command-Line Arguments</h2>
-<div class="table-wrapper"><table>
+<table>
 <thead>
 <tr>
 <th>Argument</th>
@@ -565,7 +558,7 @@
 <td>Kill existing Ray and Python processes before starting (recommended for clean start)</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <h2 id="workflow-details">Workflow Details</h2>
 <ol>
 <li><strong>Process Cleanup (Optional)</strong></li>
@@ -604,12 +597,12 @@
 <li>Structured logs: all companion logs live under <code>logs/companion/</code> with a file name pattern <code>&lt;tag&gt;.&lt;hash&gt;.&lt;hostname&gt;.log</code> and a sibling PGID file <code>&lt;tag&gt;.&lt;hash&gt;.&lt;hostname&gt;.pgid</code>.</li>
 </ul>
 <p>On launch, the console prints where logs go, for example:</p>
-<pre class="codehilite"><code>log to logs/companion/appworld_env_service.bc21d4e3.dlc1x89r0ps6ysm8-master-0.log
-</code></pre>
+<div class="codehilite"><pre><span></span><code>log to logs/companion/appworld_env_service.bc21d4e3.dlc1x89r0ps6ysm8-master-0.log
+</code></pre></div>
 
 <p>You can open or stream the service logs directly, e.g.:</p>
-<pre class="codehilite"><code class="language-bash">tail -f logs/companion/appworld_env_service.*.log
-</code></pre>
+<div class="codehilite"><pre><span></span><code>tail<span class="w"> </span>-f<span class="w"> </span>logs/companion/appworld_env_service.*.log
+</code></pre></div>
 
 <p>Notes:</p>
 <ul>
@@ -618,8 +611,8 @@
 <li>Tags: <code>launcher.py</code> applies a meaningful <code>tag</code> for each service (e.g., <code>appworld_env_service</code>), which appears in the log filename.</li>
 </ul>
 <h2 id="example-full-experiment-launch">Example: Full Experiment Launch</h2>
-<pre class="codehilite"><code class="language-bash">python launcher.py --kill --conf examples/self-question-nav-attr.yaml --with-appworld --with-exp-maker
-</code></pre>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>launcher.py<span class="w"> </span>--kill<span class="w"> </span>--conf<span class="w"> </span>examples/self-question-nav-attr.yaml<span class="w"> </span>--with-appworld<span class="w"> </span>--with-exp-maker
+</code></pre></div>
 
 <ul>
 <li>Cleans up old processes</li>
@@ -651,16 +644,16 @@
 <li><code>RAY_record_task_actor_creation_sites=true</code></li>
 </ul>
 <p>Then, inside your code, import the helper from <code>vsdb.py</code>:</p>
-<pre class="codehilite"><code class="language-python">from agentevolver import bp
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">agentevolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">bp</span>
 
-def some_function():
-   bp(&quot;tag&quot;)  # hits only if &quot;tag&quot; is in DEBUG_TAGS and RAY_DEBUG_POST_MORTEM is set
-   # ... your logic ...
-</code></pre>
+<span class="k">def</span><span class="w"> </span><span class="nf">some_function</span><span class="p">():</span>
+   <span class="n">bp</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">)</span>  <span class="c1"># hits only if &quot;tag&quot; is in DEBUG_TAGS and RAY_DEBUG_POST_MORTEM is set</span>
+   <span class="c1"># ... your logic ...</span>
+</code></pre></div>
 
 <p>Run with one or more tags:</p>
-<pre class="codehilite"><code class="language-bash">python launcher.py --kill --conf examples/self-question-nav-attr.yaml --db &quot;tag|tag2|tag3|tag4&quot;
-</code></pre>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>launcher.py<span class="w"> </span>--kill<span class="w"> </span>--conf<span class="w"> </span>examples/self-question-nav-attr.yaml<span class="w"> </span>--db<span class="w"> </span><span class="s2">&quot;tag|tag2|tag3|tag4&quot;</span>
+</code></pre></div>
 
 <p>Behavior summary:</p>
 <ul>
@@ -703,10 +696,10 @@ def some_function():
 <li><code>MYENV_SCRIPT</code> — The exact command used to start the service</li>
 </ul>
 <p>Example <code>.env</code> snippet (place at project root):</p>
-<pre class="codehilite"><code># MyEnv service
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> MyEnv service
 MYENV_PATH=/abs/path/to/myenv
 MYENV_SCRIPT=python -m myenv.api --host 0.0.0.0 --port 9009
-</code></pre>
+</code></pre></div>
 
 <p>Quick check:</p>
 <ul>
@@ -714,7 +707,8 @@ MYENV_SCRIPT=python -m myenv.api --host 0.0.0.0 --port 9009
 <li><code>python launcher.py --with-myenv</code> (add <code>--kill</code> to clean stale processes if needed)</li>
 <li>Watch logs under <code>logs/companion/</code> to confirm startup completes and the ready string appears.</li>
 </ul>
-  </div>
+
+    </div>
 </article>
                                 <div class="mx-auto flex flex-wrap h-16 w-full max-w-2xl items-center gap-2 px-4 md:px-0">
     
