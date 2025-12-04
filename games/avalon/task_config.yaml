@@ -17,11 +17,11 @@ roles:
   # 需要训练的角色
   train:
     - merlin
+    - servant_0
   
   # 不需要训练的角色（使用默认模型）
   no_train:
     - assassin
-    - servant_0
     - servant_1
     - minion
     

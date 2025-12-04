@@ -25,6 +25,7 @@ class AvalonGame:
         observe_agent: AgentBase | None = None,
         state_manager: Any = None,
         preset_roles: list[tuple[int, str, bool]] | None = None,
+        timestamp: str | None = None,
     ):
         """Initialize Avalon game.
         
@@ -37,6 +38,7 @@ class AvalonGame:
             state_manager: Optional state manager for web mode to check stop flag.
             preset_roles: Optional list of preset roles as tuples (role_id, role_name, is_good).
                 If provided, uses these roles instead of random assignment.
+            timestamp: Optional timestamp string for log directory naming. If None, generates a new one.
         """
         self.agents = agents
         self.config = config
@@ -90,7 +92,7 @@ class AvalonGame:
             self.roles = self.env.get_roles()
         
         # Initialize game log
-        self.game_logger.create_game_log_dir(log_dir)
+        self.game_logger.create_game_log_dir(log_dir, timestamp)
         self.game_logger.initialize_game_log(self.roles, config.num_players)
         
         assert len(agents) == config.num_players, f"The Avalon game needs exactly {config.num_players} players."
