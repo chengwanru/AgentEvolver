@@ -86,10 +86,11 @@ class EvalAvalonWorkflow:
     def _create_agent(self, player_id: int, indexed_role: str, base_role: str):
         """Create an agent for a player."""
         from agentscope.model import OpenAIChatModel
-        from agentscope.formatter import OpenAIMultiAgentFormatter
         from agentscope.memory import InMemoryMemory
         from agentscope.tool import Toolkit
         from games.avalon.agents.thinking_react_agent import ThinkingReActAgent
+        from games.avalon.agents.secure_multi_agent_formatter import SecureMultiAgentFormatter  # pyright: ignore[reportMissingImports]
+
         
         model_config = self._get_model_config(indexed_role, base_role)
         
@@ -125,7 +126,7 @@ class EvalAvalonWorkflow:
             name=f"Player{player_id}",
             sys_prompt="",
             model=model,
-            formatter=OpenAIMultiAgentFormatter(),
+            formatter=SecureMultiAgentFormatter(),
             memory=InMemoryMemory(),
             toolkit=Toolkit(),
         )
