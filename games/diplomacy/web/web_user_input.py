@@ -73,6 +73,7 @@ class WebUserInput(UserInputBase):
                 except json.JSONDecodeError:
                     # If not JSON, create a simple dict with the content
                     structured_input = {"content": content}
+                    print(f"Warning: Failed to parse structured input as JSON for model {structured_model.__name__}")
             
             return UserInputData(
                 blocks_input=[TextBlock(type="text", text=content)],
