@@ -1,7 +1,6 @@
 """ReAct agent with private thinking (shared)."""
 
 from typing import Any, Literal
-import json
 import re
 
 from agentscope.agent import ReActAgent
@@ -71,7 +70,11 @@ class ThinkingReActAgent(ReActAgent):
         self,
         tool_choice: Literal["auto", "none", "any", "required"] | None = None,
     ) -> Msg:
-        """Perform reasoning with thinking section."""
+        """Perform reasoning with thinking section.
+
+        The complete message (with thinking) is stored in memory/history,
+        but the returned message (for broadcast) excludes thinking content.
+        """
         prompt = await self.formatter.format(
             msgs=[
                 Msg("system", self.sys_prompt, "system"),
@@ -84,16 +87,8 @@ class ThinkingReActAgent(ReActAgent):
 
         if msg is not None:
             response_content = extract_text_from_content(msg.content)
-
-            prompt_str = prompt
-            if not isinstance(prompt, str):
-                if isinstance(prompt, dict):
-                    prompt_str = json.dumps(prompt, ensure_ascii=False, indent=2)
-                else:
-                    prompt_str = str(prompt)
-
             call_record = {
-                "prompt": prompt_str,
+                "prompt": prompt,  # prompt is already list[dict[str, Any]]
                 "response": response_content,
                 "response_msg": msg.to_dict()
                 if hasattr(msg, "to_dict")
