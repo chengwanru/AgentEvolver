@@ -72,7 +72,7 @@ class ThinkingReActAgent(ReActAgent):
         if thinking_sys_prompt is None:
             thinking_sys_prompt = (
                 "Before you respond, think carefully about your response. "
-                f"Your thinking process should be wrapped in {thinking_tag_start}...</{thinking_tag_end}> tags. "
+                f"Your thinking process should be wrapped in {thinking_tag_start}...{thinking_tag_end} tags. "
                 "Then provide your actual response after the thinking section. "
                 "Example format:\n"
                 f"{thinking_tag_start}\n"
