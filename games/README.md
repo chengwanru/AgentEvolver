@@ -20,13 +20,13 @@ A web-based interface allows you to:
 
 We currently support two games, Avalon and Diplomacy, both of which are strategy games involving long-term reasoning.
 
-<table>
+<table style="border: none; border-collapse: collapse;">
 <tr>
-<td align="center" width="50%">
+<td align="center" width="50%" style="border: none; text-align: center;">
   <img src="../docs/img/games/avalon_demo_extracted.gif" alt="Avalon Demo" width="100%" />
   <br><strong>Avalon</strong>
 </td>
-<td align="center" width="50%">
+<td align="center" width="50%" style="border: none; text-align: center;">
   <img src="../docs/img/games/diplomacy_demo_extracted.gif" alt="Diplomacy Demo" width="100%" />
   <br><strong>Diplomacy</strong>
 </td>
