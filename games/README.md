@@ -44,8 +44,6 @@ AgentEvolver provides a built-in evaluation framework to **systematically compar
 - Run multiple games in parallel for statistically meaningful results  
 - Control game settings and model assignments via configuration files  
 
-> 📊 *Example evaluation summaries and visualized results will be added here.*
-
 ---
 
 ### 3. Train AI Agents
@@ -63,14 +61,20 @@ AgentEvolver is designed to support **end-to-end training of AI agents in social
 
 ### Install Dependencies
 
-Run:
+We provide a minimal requirements for non-training usage:
 
-    pip install -r requirements.txt
+    pip install -r games/requirements_game.txt
 
-(Optional) Set environment variables:
+(Optional) Set environment variables for using LLM APIs:
 
+    export OPENAI_BASE_URL=your_api_url
+    export OPENAI_API_KEY=your_api_key
+
+<<<<<<< HEAD
     export OPENAI_API_KEY=your_api_key
     export MODEL_NAME=your_default_model
+=======
+>>>>>>> origin/dev/game_train
 
 ---
 
@@ -102,6 +106,8 @@ Example command:
         --config games/games/avalon/configs/task_config.yaml \
         --num-games 10
 
+To use local models, see introduction in games/evaluation/run_eval.py.
+
 After completion, a summary similar to the following will be displayed:
 
     Evaluation Results Summary – AVALON
@@ -111,6 +117,13 @@ After completion, a summary similar to the following will be displayed:
     ...
 
 ---
+
+### Train an LLM Agent
+
+Example command:
+
+    xxxx 
+
 
 ## ⚙️ Configuration Overview
 
