@@ -23,11 +23,11 @@ We currently support two games, Avalon and Diplomacy, both of which are strategy
 <div align="center">
   <figure style="display: inline-block; margin: 0 1em;">
     <img src="../docs/img/games/avalon_demo_extracted.gif" alt="Avalon Demo" width="45%" />
-    <figcaption>Avalon – Hidden roles, logical inference, and deception  </figcaption>
+    <figcaption>Avalon Game  </figcaption>
   </figure>
   <figure style="display: inline-block; margin: 0 1em;">
     <img src="../docs/img/games/diplomacy_demo_extracted.gif" alt="Diplomacy Demo" width="45%" />
-    <figcaption>Diplomacy – Negotiation, alliances, and long-term strategy</figcaption>
+    <figcaption>Diplomacy Game</figcaption>
   </figure>
 </div>
 
