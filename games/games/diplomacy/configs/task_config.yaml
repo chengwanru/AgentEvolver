@@ -1,0 +1,26 @@
+# Task configuration for Diplomacy game
+# This config inherits from default_config.yaml using Hydra's defaults mechanism
+defaults:
+  - default_config
+  - _self_
+
+# Task-specific configuration (optional)
+# Uncomment and modify to override default values:
+# game:
+#   max_phases: 15  # Override default max_phases
+#   language: en     # Override default language
+#   seed: 12345     # Override default seed
+
+# Power-specific configuration (optional)
+# If url or model_name are not specified for a power, all corresponding parameters 
+# are taken from default_model. If specified, they override the default values.
+# temperature, max_tokens, stream, trainable are optional - if not specified, use default_model configuration
+# models:
+#   ENGLAND:
+#     model_name: qwen-max
+#     # temperature: 0.7  # Optional, uses default_model configuration
+#     # max_tokens: 2048  # Optional
+#   
+#   FRANCE:
+#     url: http://localhost:8000/v1  # VLLM server URL
+#     model_name: local_model

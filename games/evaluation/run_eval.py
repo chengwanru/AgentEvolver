@@ -82,12 +82,19 @@ def get_avalon_evaluator():
 
 def get_diplomacy_evaluator():
     """Get Diplomacy game evaluator function."""
-    # TODO: Update diplomacy workflow to return dict instead of using Task
-    # For now, return a placeholder
+    from games.games.diplomacy.workflows.eval_workflow import EvalDiplomacyWorkflow
+    
     def run_single_game(config_dict: Dict[str, Any], game_id: int) -> Dict[str, Any]:
         """Run a single Diplomacy game."""
-        # TODO: Implement when diplomacy workflow is updated
-        raise NotImplementedError("Diplomacy evaluation needs to be updated to use config_dict")
+        try:
+            workflow = EvalDiplomacyWorkflow(config_dict=config_dict)
+            result = workflow.execute()
+            return result
+        except Exception as e:
+            print(f"Game {game_id} failed: {e}", file=sys.stderr)
+            import traceback
+            traceback.print_exc()
+            return None
     
     return run_single_game
 

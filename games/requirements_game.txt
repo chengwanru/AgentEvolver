@@ -31,6 +31,9 @@ requests>=2.32.0
 # Async support
 nest-asyncio>=1.6.0
 
+# Diplomacy support
+diplomacy>=1.1.2
+
 # Token counter (HuggingFaceTokenCounter)
 transformers==4.53.2
 

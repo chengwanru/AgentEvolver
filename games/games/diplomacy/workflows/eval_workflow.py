@@ -3,11 +3,14 @@
 import asyncio
 import os
 import copy
+import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
+from agentevolver.utils.agentscope_utils import BaseAgentscopeWorkflow
 from agentevolver.schema.task import Task
 from agentevolver.schema.trajectory import Trajectory
+
 from games.games.diplomacy.game import DiplomacyGame
 from games.games.diplomacy.engine import DiplomacyConfig
 
@@ -33,8 +36,14 @@ class PowerManager:
 class EvalDiplomacyWorkflow:
     """Workflow class for Diplomacy game evaluation."""
 
-    def __init__(self, task: Task):
-        self.config_dict = task.metadata.get('diplomacy_config', task.metadata)
+    def __init__(self, config_dict: Dict[str, Any]):
+        """Initialize workflow with config dictionary.
+        
+        Args:
+            config_dict: Configuration dictionary containing game settings,
+                model configurations, etc.
+        """
+        self.config_dict = config_dict
         self.power_manager: Optional[PowerManager] = None
 
     def _get_model_config(self, power_name: str) -> Dict[str, Any]:
@@ -105,7 +114,17 @@ class EvalDiplomacyWorkflow:
 
     async def _execute_async(self) -> Dict[str, Any]:
         """Execute the game asynchronously."""
+
+        base_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        unique_timestamp = f"{base_timestamp}_{uuid.uuid4().hex[:8]}"
+
         game_config = self.config_dict.get('game', {})
+        experiment_name = self.config_dict.get('experiment_name')
+        log_dir = game_config.get('log_dir', 'logs')
+
+        if experiment_name:
+            experiment_name = str(experiment_name).replace('/', '_').replace('\\', '_')
+            log_dir = os.path.join(log_dir, experiment_name)
 
         # Setup game configuration
         power_names = game_config.get('power_names', PowerManager.DEFAULT_POWERS)
@@ -129,23 +148,22 @@ class EvalDiplomacyWorkflow:
         diplomacy_game = DiplomacyGame(
             agents=self.agents,
             config=config,
-            log_dir=game_config.get('log_dir', 'logs'),
+            log_dir=log_dir,
         )
 
         game = await diplomacy_game.run()
 
         # Return evaluation results
         results = {
-            'outcome': game.outcome,
-            'powers': {},
+            'game_result': game.outcome,
+            'role': [],
         }
 
         for power_name, power in game.powers.items():
-            results['powers'][power_name] = {
-                'supply_centers': len(power.centers),
-                'is_eliminated': power.is_eliminated(),
-                'units': len(power.units),
-            }
+            results['role'].append({
+                'role_name': power_name,
+                'score': len(power.centers),
+            })
 
         return results
 

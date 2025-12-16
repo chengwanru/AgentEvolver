@@ -14,7 +14,7 @@ from agentscope.message import Msg
 from agentscope.agent import AgentBase
 
 # 引入重构后的工具函数
-from .utils import Colors, add_legend_to_svg, save_game_logs, order_to_natural_language, load_prompts
+from .utils import Colors, add_legend_to_svg, save_game_logs, order_to_natural_language, load_prompts, parse_negotiation_messages
 from .engine import DiplomacyConfig
 
 class DiplomacyGame:
@@ -281,106 +281,22 @@ class DiplomacyGame:
                 )
                 
                 msg = Msg(name="Moderator", content=negotiation_prompt, role="assistant")
-                response_msg = await agent(msg)
+                for attempt in range(3):
+                    try:
+                        response_msg = await agent(msg)
+                        break
+                    except Exception as e:
+                        print(f"{Colors.FAIL}{power_name} 谈判阶段发生错误 (尝试 {attempt+1}/3): {type(e).__name__}: {e}{Colors.ENDC}")
+                        import traceback
+                        traceback.print_exc()
+                        if attempt < 2:  # 不是最后一次尝试
+                            await asyncio.sleep(1 * (2 ** attempt))
+                        else:
+                            return []  # 返回空列表而不是抛出异常
+                
                 response_text = response_msg.get_text_content()
 
-                # Parse messages
-                # =========================
-                # Robust message parsing (DROP-IN REPLACEMENT)
-                # Supports:
-                #  1) JSON list (possibly wrapped in ```json ... ``` or with extra text)
-                #  2) "FRANCE: Hi" / multi-lines "FRANCE: Hi\nENGLAND: Hi"  -> private per line
-                #  3) plain "hi" -> GLOBAL
-                # =========================
-
-                raw = (response_text or "").strip()
-                parsed_msgs = []
-
-                # ---- (A) Try parse JSON list first ----
-                json_text = raw
-
-                # Strip code fences if any
-                json_text = re.sub(r"^\s*```(?:json)?\s*", "", json_text, flags=re.IGNORECASE)
-                json_text = re.sub(r"\s*```\s*$", "", json_text).strip()
-
-                # Extract the first complete JSON list by bracket counting (more robust than greedy regex)
-                start = json_text.find("[")
-                json_list_sub = None
-                if start >= 0:
-                    depth = 0
-                    in_str = False
-                    esc = False
-                    for i in range(start, len(json_text)):
-                        ch = json_text[i]
-                        if in_str:
-                            if esc:
-                                esc = False
-                            elif ch == "\\":
-                                esc = True
-                            elif ch == '"':
-                                in_str = False
-                            continue
-                        else:
-                            if ch == '"':
-                                in_str = True
-                                continue
-                            if ch == "[":
-                                depth += 1
-                            elif ch == "]":
-                                depth -= 1
-                                if depth == 0:
-                                    json_list_sub = json_text[start:i + 1]
-                                    break
-
-                if json_list_sub:
-                    # Normalize common “smart quotes”
-                    cand = (
-                        json_list_sub.replace("“", '"')
-                        .replace("”", '"')
-                        .replace("’", "'")
-                        .strip()
-                    )
-                    try:
-                        messages_data = json.loads(cand)
-                        if isinstance(messages_data, list):
-                            for msg_data in messages_data:
-                                if not isinstance(msg_data, dict):
-                                    continue
-                                content = (msg_data.get("content") or "").strip()
-                                if not content:
-                                    continue
-
-                                mt = (msg_data.get("message_type") or "").lower().strip()
-                                # tolerate missing/unknown
-                                if mt not in ("private", "global"):
-                                    mt = "global" if ("recipient" not in msg_data) else "private"
-
-                                if mt == "global":
-                                    parsed_msgs.append({"message_type": "global", "recipient": "GLOBAL", "content": content})
-                                else:
-                                    rec = (msg_data.get("recipient") or "").strip()
-                                    parsed_msgs.append({"message_type": "private", "recipient": rec, "content": content})
-                    except json.JSONDecodeError:
-                        pass
-
-                # ---- (B) If JSON failed / empty: try "FRANCE: Hi" lines ----
-                if not parsed_msgs:
-                    lines = [ln.strip() for ln in raw.splitlines() if ln.strip()]
-                    for ln in lines:
-                        m = re.match(r"^([A-Za-z_]+)\s*:\s*(.+)$", ln)
-                        if not m:
-                            continue
-                        target = m.group(1).strip().upper()
-                        content = m.group(2).strip()
-                        if not content:
-                            continue
-                        # Only accept real powers to avoid accidental matches
-                        if target in self.game.powers.keys() or target in [p.upper() for p in self.game.powers.keys()]:
-                            parsed_msgs.append({"message_type": "private", "recipient": target, "content": content})
-
-                # ---- (C) Fallback: plain text -> GLOBAL ----
-                if not parsed_msgs and raw:
-                    parsed_msgs = [{"message_type": "global", "recipient": "GLOBAL", "content": raw}]
+                parsed_msgs = parse_negotiation_messages(raw=response_text, power_name=power_name)
 
                 # ---- Emit agent_messages (keep your original resolution logic) ----
                 for msg_data in parsed_msgs:
@@ -410,7 +326,7 @@ class DiplomacyGame:
                     continue
                 tasks.append(process_agent_negotiation(power_name, self.power_agent_map[power_name]))
             
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            results = await asyncio.gather(*tasks, return_exceptions=False)
             
             for res in results:
                 for sender, recipient, content in res:
@@ -486,7 +402,18 @@ class DiplomacyGame:
             )
 
             msg = Msg(name="Moderator", content=order_prompt, role="user")
-            response_msg = await agent(msg)
+            for attempt in range(3):
+                try:
+                    response_msg = await agent(msg)
+                    break
+                except Exception as e:
+                    print(f"{Colors.FAIL}{power_name} 指令阶段发生错误 (尝试 {attempt+1}/3): {type(e).__name__}: {e}{Colors.ENDC}")
+                    import traceback
+                    traceback.print_exc()
+                    if attempt < 2:  # 不是最后一次尝试
+                        await asyncio.sleep(1 * (2 ** attempt))
+                    else:
+                        return []  # 返回空列表而不是抛出异常
             response_text = str(response_msg.content)
             phase_log["order_logs"][power_name] = response_text
 
@@ -522,7 +449,7 @@ class DiplomacyGame:
             else:
                 random_fallback_powers.append(power_name)
         
-        results = await asyncio.gather(*tasks, return_exceptions=True)
+        results = await asyncio.gather(*tasks, return_exceptions=False)
         
         for power_name, submitted_orders, translated_orders in results:
             if submitted_orders:

@@ -1,0 +1,42 @@
+default_model:
+  url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model_name: qwen-plus
+  temperature: 0.7
+  max_tokens: 2048
+  stream: false
+  trainable: false
+  act_by_user: false
+
+# Default game configuration
+game:
+  name: diplomacy
+  power_names:
+    - AUSTRIA
+    - ENGLAND
+    - FRANCE
+    - GERMANY
+    - ITALY
+    - RUSSIA
+    - TURKEY
+  map_name: standard
+  max_phases: 10
+  negotiation_rounds: 1
+  seed: 42
+  language: zh  # zh: Chinese, en: English
+  log_dir: logs
+
+# Power-specific configuration (empty by default, can be overridden in child configs)
+# If a power is configured in models, it overrides default_model.
+models:
+  # Example: route a power to local vLLM
+  # ENGLAND:
+  #   url: http://localhost:8000/v1  # VLLM server URL (start with: python games/evaluation/start_vllm.py --model-path /path/to/model)
+  #   model_name: local_model  # Model name served by VLLM (must match --model-name in start_vllm.py)
+  #   # temperature: 0.7  # Optional, uses default_model configuration
+  #   # max_tokens: 2048  # Optional
+  
+  # FRANCE:
+  #   model_name: qwen-max
+  
+  default:
+    model_name: qwen-plus
