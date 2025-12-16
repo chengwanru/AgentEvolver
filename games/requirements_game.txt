@@ -34,3 +34,8 @@ nest-asyncio>=1.6.0
 # Diplomacy support
 diplomacy>=1.1.2
 
+# Token counter (HuggingFaceTokenCounter)
+transformers==4.53.2
+
+# Template engine
+Jinja2==3.1.6
