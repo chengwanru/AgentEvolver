@@ -164,6 +164,94 @@ async def save_game_logs(
         except Exception as e:
             print(f"{Colors.WARNING}Failed to save memory for agent {agent.name}: {e}{Colors.ENDC}")
 
+# 提取消息解析逻辑为独立方法
+def parse_negotiation_messages(raw: str, power_name: str) -> List[Dict]:
+    """Parse negotiation messages from agent response."""
+    raw = (raw or "").strip()
+    parsed_msgs = []
+    
+    # (A) Try parse JSON list first
+    json_text = raw
+    json_text = re.sub(r"^\s*```(?:json)?\s*", "", json_text, flags=re.IGNORECASE)
+    json_text = re.sub(r"\s*```\s*$", "", json_text).strip()
+    
+    start = json_text.find("[")
+    json_list_sub = None
+    if start >= 0:
+        depth = 0
+        in_str = False
+        esc = False
+        for i in range(start, len(json_text)):
+            ch = json_text[i]
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == "\\":
+                    esc = True
+                elif ch == '"':
+                    in_str = False
+                continue
+            else:
+                if ch == '"':
+                    in_str = True
+                    continue
+                if ch == "[":
+                    depth += 1
+                elif ch == "]":
+                    depth -= 1
+                    if depth == 0:
+                        json_list_sub = json_text[start:i + 1]
+                        break
+    
+    if json_list_sub:
+        cand = (
+            json_list_sub.replace(""", '"')
+            .replace(""", '"')
+            .replace("'", "'")
+            .strip()
+        )
+        try:
+            messages_data = json.loads(cand)
+            if isinstance(messages_data, list):
+                for msg_data in messages_data:
+                    if not isinstance(msg_data, dict):
+                        continue
+                    content = (msg_data.get("content") or "").strip()
+                    if not content:
+                        continue
+                    
+                    mt = (msg_data.get("message_type") or "").lower().strip()
+                    if mt not in ("private", "global"):
+                        mt = "global" if ("recipient" not in msg_data) else "private"
+                    
+                    if mt == "global":
+                        parsed_msgs.append({"message_type": "global", "recipient": "GLOBAL", "content": content})
+                    else:
+                        rec = (msg_data.get("recipient") or "").strip()
+                        parsed_msgs.append({"message_type": "private", "recipient": rec, "content": content})
+        except json.JSONDecodeError:
+            pass
+    
+    # (B) If JSON failed: try "FRANCE: Hi" lines
+    if not parsed_msgs:
+        lines = [ln.strip() for ln in raw.splitlines() if ln.strip()]
+        for ln in lines:
+            m = re.match(r"^([A-Za-z_]+)\s*:\s*(.+)$", ln)
+            if not m:
+                continue
+            target = m.group(1).strip().upper()
+            content = m.group(2).strip()
+            if not content:
+                continue
+            if target in self.game.powers.keys() or target in [p.upper() for p in self.game.powers.keys()]:
+                parsed_msgs.append({"message_type": "private", "recipient": target, "content": content})
+    
+    # (C) Fallback: plain text -> GLOBAL
+    if not parsed_msgs and raw:
+        parsed_msgs = [{"message_type": "global", "recipient": "GLOBAL", "content": raw}]
+    
+    return parsed_msgs
+
 def order_to_natural_language(order: str) -> str:
     """
     将标准的 Diplomacy 指令字符串转换为中文自然语言描述。
