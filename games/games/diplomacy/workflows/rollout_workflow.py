@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from loguru import logger
 
 from agentevolver.utils.agentscope_utils import BaseAgentscopeWorkflow
-from games.utils import cleanup_agent_llm_clients
+from games.utils import cleanup_agent_llm_clients, load_agent_class
 from agentevolver.schema.task import Task
 from agentevolver.schema.trajectory import Trajectory, Reward
 from games.games.diplomacy.game import DiplomacyGame
@@ -113,7 +113,6 @@ class DiplomacyWorkflow(BaseAgentscopeWorkflow):
         from agentscope.model import OpenAIChatModel
         from agentscope.memory import InMemoryMemory
         from agentscope.tool import Toolkit
-        from games.agents.thinking_react_agent import ThinkingReActAgent
 
         # Use training model if power is training, otherwise create default model
         if self._is_training_power(indexed_role, base_role):
@@ -176,7 +175,12 @@ class DiplomacyWorkflow(BaseAgentscopeWorkflow):
             preserved_agent_names=preserved_agent_names,
         )
 
-        return ThinkingReActAgent(
+        # Load agent class from role config, default to ThinkingReActAgent
+        model_config = self._get_model_config(indexed_role, base_role)
+        agent_class_path = model_config.get('agent_class')
+        AgentClass = load_agent_class(agent_class_path)
+
+        return AgentClass(
             name=f"Player{player_id}",
             sys_prompt="",
             model=model,

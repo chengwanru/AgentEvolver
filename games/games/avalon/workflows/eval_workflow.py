@@ -12,7 +12,7 @@ from collections import defaultdict
 from openai import OpenAI
 
 from agentevolver.utils.agentscope_utils import BaseAgentscopeWorkflow
-from games.utils import cleanup_agent_llm_clients
+from games.utils import cleanup_agent_llm_clients, load_agent_class
 from agentevolver.schema.task import Task
 from agentevolver.schema.trajectory import Trajectory
 from games.games.avalon.game import AvalonGame
@@ -25,7 +25,6 @@ from agentscope.memory import InMemoryMemory
 from agentscope.formatter import OpenAIMultiAgentFormatter
 from agentscope.token import HuggingFaceTokenCounter
 from agentscope.tool import Toolkit
-from games.agents.thinking_react_agent import ThinkingReActAgent
 from games.agents.secure_multi_agent_formatter import SecureMultiAgentFormatter
 
 # Lock for protecting HuggingFaceTokenCounter initialization from concurrent access
@@ -160,7 +159,11 @@ class EvalAvalonWorkflow:
             preserved_agent_names=["Moderator"],
         )
         
-        return ThinkingReActAgent(
+        # Load agent class from role config, default to ThinkingReActAgent
+        agent_class_path = model_config.get('agent_class')
+        AgentClass = load_agent_class(agent_class_path)
+        
+        return AgentClass(
             name=f"Player{player_id}",
             sys_prompt="",
             model=model,
