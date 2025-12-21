@@ -291,6 +291,13 @@ Example:
     default_model:
       model_name: qwen-plus
       temperature: 0.7
+      agent_config:
+        type: ThinkingReActAgent
+        kwargs:
+          sys_prompt: ""
+          memory:
+            type: InMemoryMemory
+            kwargs: {}
     
     roles:
       assassin:
@@ -303,9 +310,12 @@ Example:
 
 The AgentEvolver Game Arena is designed to be extensible and customizable. You can:
 
-- **Develop custom agents** - Implement your own agent logic, strategies, and reasoning capabilities
-- **Design memory systems** - Build memory architectures that help agents remember game history, player behaviors, and strategic patterns
-- **Train models** - Use the provided training pipeline to fine-tune models for specific roles, strategies, or game scenarios
+- **Develop custom agents** - Implement your own agent logic, strategies, and reasoning capabilities. Reference `games/agents/thinking_react_agent.py` and configure via `agent_config.type` in YAML.
+- **Design memory systems** - Build memory architectures that help agents remember game history, player behaviors, and strategic patterns. Configure via `agent_config.kwargs.memory` in YAML.
+- **Design formatter systems** - Create formatters for message formatting and token management. Configure via `agent_config.kwargs.formatter` in YAML.
+- **Train models** - Use the provided training pipeline to fine-tune models for specific roles, strategies, or game scenarios.
+
+See `games/games/avalon/configs/default_config.yaml` and `games/games/diplomacy/configs/default_config.yaml` for detailed configuration examples.
 
 Now, try anything you want. Build your own agents, memories, or models. And one day, let's see them meet — and compete — in the arena.
 

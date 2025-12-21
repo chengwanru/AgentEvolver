@@ -10,7 +10,11 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from loguru import logger
 
 from agentevolver.utils.agentscope_utils import BaseAgentscopeWorkflow
-from games.utils import cleanup_agent_llm_clients, load_agent_class
+from games.utils import (
+    cleanup_agent_llm_clients,
+    create_agent_from_config,
+    create_model_from_config,
+)
 from agentevolver.schema.task import Task
 from agentevolver.schema.trajectory import Trajectory, Reward
 from games.games.diplomacy.game import DiplomacyGame
@@ -109,109 +113,28 @@ class DiplomacyWorkflow(BaseAgentscopeWorkflow):
         return model_config.get('trainable', False) is True
 
     def _create_agent(self, player_id: int, indexed_role: str, base_role: str):
-        """Create an agent for a power."""
-        from agentscope.model import OpenAIChatModel
-        from agentscope.memory import InMemoryMemory
-        from games.agents.memory import SlidingWindowMemory
-        from agentscope.tool import Toolkit
-
-        # Use training model if power is training, otherwise create default model
+        """Create an agent for a power using create_agent_from_config."""
+        model_config = self._get_model_config(indexed_role, base_role)
+        
+        # Create model (required for both modes)
+        # Use training model if power is training, otherwise create from config
         if self._is_training_power(indexed_role, base_role):
             model = self.model
-            # For training model, use model path from config
-            model_name_for_tokenizer = self.config.actor_rollout_ref.model.path
         else:
-            model_config = self._get_model_config(indexed_role, base_role)
-            
-            # Build model kwargs (aligned with eval_workflow.py)
-            # Get base_url from config first, then from environment variable
-            base_url = model_config.get('url') or os.environ.get('OPENAI_BASE_URL')
-            if not base_url:
-                raise ValueError(
-                    "base_url is required. Please set it in config (url) or "
-                    "environment variable (OPENAI_BASE_URL)."
-                )
-            
-            model_kwargs = {
-                'model_name': model_config['model_name'],
-                'client_args': {'base_url': base_url},
-            }
-            
-            # Add optional parameters
-            # Get api_key from config first, then from environment variable
-            api_key = model_config.get('api_key') or os.environ.get('OPENAI_API_KEY')
-            if api_key:
-                model_kwargs['api_key'] = api_key
-            else:
-                raise ValueError(
-                    "api_key is required. Please set it in config (api_key) or "
-                    "environment variable (OPENAI_API_KEY)."
-                )
-            if 'stream' in model_config:
-                model_kwargs['stream'] = model_config['stream']
-            
-            # Build generate_kwargs
-            generate_kwargs = {
-                k: model_config[k] for k in ['temperature', 'max_tokens']
-                if k in model_config
-            }
-            # turn off auto-thinking for qwen3
-            generate_kwargs['extra_body'] = {
-                'enable_thinking': False,  # Required for non-streaming calls with DashScope
-            }
-            if generate_kwargs:
-                model_kwargs['generate_kwargs'] = generate_kwargs
-            
-            model = OpenAIChatModel(**model_kwargs)
-            model_name_for_tokenizer = self.config.actor_rollout_ref.model.path
+            model = create_model_from_config(model_config)
         
-        # Calculate max_tokens for formatter (leave room for response)
-        max_model_len = self.config.actor_rollout_ref.rollout.max_model_len
-        response_length = self.config.actor_rollout_ref.rollout.response_length
-
-        # token计数可能有问题，添加安全边界
-        SAFETY_MARGIN = 100
-        
-        max_tokens = max_model_len - response_length - SAFETY_MARGIN if max_model_len and response_length else None
-
-
-        # Ensure max_tokens is valid
-        if max_tokens is not None and max_tokens <= 0:
-            logger.warning(
-                f"max_tokens calculated as {max_tokens}, setting to None. "
-                f"max_model_len={max_model_len}, response_length={response_length}"
-            )
-            max_tokens = None
-        # Get preserved agent names from config (if available)
-        # Default to preserving "Moderator" if not specified
-        preserved_agent_names = ["Moderator"]
-        
-        # Create formatter with truncation support
-        # Use lock to protect HuggingFaceTokenCounter initialization from concurrent access
-        with _tokenizer_lock:
-            token_counter = HuggingFaceTokenCounter(
-                pretrained_model_name_or_path=model_name_for_tokenizer,
-                use_mirror=True,
+        # Get agent_config from model_config (should be in default_model or role-specific)
+        agent_config = model_config.get('agent_config')
+        if agent_config is None:
+            raise ValueError(
+                f"agent_config is required. Please specify it in default_model or role-specific config for {indexed_role}."
             )
         
-        formatter = SecureMultiAgentFormatter(
-            token_counter=token_counter,
-            max_tokens=max_tokens,
-            preserved_agent_names=preserved_agent_names,
-        )
-
-        # Load agent class from role config, default to ThinkingReActAgent
-        model_config = self._get_model_config(indexed_role, base_role)
-        agent_class_path = model_config.get('agent_class')
-        AgentClass = load_agent_class(agent_class_path)
-
-        return AgentClass(
-            name=f"Player{player_id}",
-            sys_prompt="",
+        return create_agent_from_config(
+            agent_config=agent_config,
             model=model,
-            formatter=formatter,
-            memory=SlidingWindowMemory(),
-            toolkit=Toolkit(),
+            player_id=player_id,
+            actor_rollout_ref=self.config.actor_rollout_ref,
         )
 
     def _create_agents(self, power_manager: PowerManager) -> List[Any]:

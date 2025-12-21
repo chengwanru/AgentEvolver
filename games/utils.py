@@ -161,5 +161,23 @@ def load_agent_class(agent_class_path: str | None = None) -> Type[Any]:
         ) from e
 
 
-__all__ = ["load_config", "cleanup_agent_llm_clients", "load_agent_class"]
+# Import factory functions for backward compatibility and convenience
+from games.agent_factory import (
+    create_agent_from_config,
+    create_model_from_config,
+    create_memory_from_config,
+    create_formatter_from_config,
+    create_toolkit_from_config,
+)
+
+__all__ = [
+    "load_config",
+    "cleanup_agent_llm_clients",
+    "load_agent_class",
+    "create_agent_from_config",
+    "create_model_from_config",
+    "create_memory_from_config",
+    "create_formatter_from_config",
+    "create_toolkit_from_config",
+]
 
