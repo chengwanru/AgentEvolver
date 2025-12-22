@@ -1,4 +1,4 @@
-# Arena configuration for Avalon game
+# Arena configuration for Diplomacy game
 # This config inherits from default_config.yaml using Hydra's defaults mechanism
 defaults:
   - default_config
@@ -19,9 +19,19 @@ arena:
 
 # Game configuration
 game:
-  name: avalon
-  num_players: 5
-  language: en
+  name: diplomacy
+  power_names:
+    - AUSTRIA
+    - ENGLAND
+    - FRANCE
+    - GERMANY
+    - ITALY
+    - RUSSIA
+    - TURKEY
+  map_name: standard
+  max_phases: 20
+  negotiation_rounds: 3
+  language: en  # zh: Chinese, en: English
   log_dir: games/logs/arena
 
 # Default role (will be overridden by arena assignment)
@@ -30,10 +40,14 @@ default_role:
   act_by_user: false
   model:
     url:  # Will be read from OPENAI_BASE_URL
+    api_key:  # Will be read from OPENAI_API_KEY
     temperature: 0.7
     max_tokens: 2048
     stream: false
   agent:
     type: ThinkingReActAgent
-    kwargs: {}
+    kwargs:
+      memory:
+        type: SlidingWindowMemory
+        kwargs: {}
 

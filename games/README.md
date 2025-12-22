@@ -81,7 +81,7 @@ AgentEvolver provides a built-in evaluation framework to **systematically compar
 </tr>
 <tr>
 <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">🥈</td>
-<td style="padding: 10px; text-align: center; border: 1px solid #ddd;"><strong>qwen3-235b-a22</strong></td>
+<td style="padding: 10px; text-align: center; border: 1px solid #ddd;"><strong>qwen3-235b-a22b</strong></td>
 <td style="padding: 10px; text-align: center; border: 1px solid #ddd;"><strong>51.5%</strong></td>
 <td style="padding: 10px; text-align: center; border: 1px solid #ddd;">165</td>
 <td style="padding: 10px; text-align: center; border: 1px solid #ddd;"><strong>42.4%</strong></td>
@@ -170,7 +170,7 @@ AgentEvolver is designed to support **end-to-end training of AI agents in social
 - Training agents directly within game environments  
 - Support for reinforcement learning–based methods (e.g., GRPO)  
 
-> 📈 *Training curves, learning dynamics, and performance evolution plots will be added here.*
+<img src="../docs/img/games/training_curve.png" alt="Training Curve" width="80%">
 
 ---
 
@@ -211,22 +211,25 @@ From the web interface you can:
 
 ### Run a Model Evaluation
 
-Example command:
+Run batch evaluations to systematically assess model performance across multiple games:
 
-    python games/evaluation/run_eval.py \
-        --game avalon \
-        --config games/games/avalon/configs/task_config.yaml \
-        --num-games 10
+```bash
+python games/evaluation/run_eval.py \
+    --game avalon \
+    --config games/games/avalon/configs/task_config.yaml \
+    --num-games 10 \
+    --max-workers 5
+```
 
-To use local models, see introduction in games/evaluation/run_eval.py.
+> To use local models, see introduction in `games/evaluation/run_eval.py`.
 
-After completion, a summary similar to the following will be displayed:
+**Output:**
+Results are displayed in formatted tables with:
+- **Game-level statistics**: Aggregated metrics (e.g., win rates, game duration) with mean, max, and min values across all games
+- **Role-level statistics**: Performance metrics broken down by role (e.g., Merlin, Servant, Assassin, Minion for Avalon) with mean, max, and min values
+- **Summary**: Total number of games completed and overall statistics
 
-    Evaluation Results Summary – AVALON
-    total_games: 10
-    successful_games: 10
-    good_victory_mean: 0.6000
-    ...
+🏟️ **For large-scale evaluations** with multiple models, fair model assignment, and Elo-based rankings, see the [Arena Leaderboard documentation](games/evaluation/leaderboard/README.md).
 
 ---
 
@@ -274,14 +277,23 @@ python -m agentevolver.main_ppo \
 
 ## ⚙️ Configuration
 
-Games and evaluations are controlled via **YAML configuration files**. Configuration structure:
+Games and evaluations are controlled via **YAML configuration files**. The configuration uses a unified role-based structure where `model` and `agent` configurations are separated but grouped under each role.
+
+### Configuration Structure
 
 - **Game settings** (`game`) – Game-specific parameters (e.g., `num_players`, `language`)
-- **Role configuration** – Priority order:
-  1. **Role-specific settings** (`roles` section) – Each role uses its own configuration if specified
-  2. **Default role settings** (`default_role`) – Used as fallback when a role's configuration is missing
+- **Default role** (`default_role`) – Default settings for all roles, containing:
+  - `trainable`, `act_by_user` – Role-level flags
+  - `model` – Model configuration (API settings, model name, temperature, etc.)
+  - `agent` – Agent configuration (type, memory, formatter, toolkit, etc.)
+- **Role-specific settings** (`roles`) – Override `default_role` for specific roles. Each role can have:
+  - `trainable`, `act_by_user` – Override role-level flags
+  - `model` – Override or extend model configuration
+  - `agent` – Override or extend agent configuration
 
-Example:
+**Configuration Priority:** Role-specific settings in `roles` section override `default_role` settings. Nested dictionaries (like `model` and `agent`) are merged recursively, so you only need to specify the fields you want to change.
+
+### Example
 
     game:
       name: avalon
@@ -306,7 +318,8 @@ Example:
     roles:
       assassin:
         model:
-          model_name: custom-model  # assassin uses custom-model, others use qwen-plus  
+          model_name: custom-model  # Only overrides model_name, other model settings inherited
+        # agent not specified, uses default_role.agent  
 
 
 
@@ -315,9 +328,11 @@ Example:
 
 The AgentEvolver Game Arena is designed to be extensible and customizable. You can:
 
-- **Develop custom agents** - Implement your own agent logic, strategies, and reasoning capabilities. Reference `games/agents/thinking_react_agent.py` and configure via `agent_config.type` in YAML.
-- **Design memory systems** - Build memory architectures that help agents remember game history, player behaviors, and strategic patterns. Create formatters for message formatting and token management. Configure via `agent_config.kwargs.memory` and `agent_config.kwargs.formatter` in YAML.
+- **Develop custom agents** - Implement your own agent logic, strategies, and reasoning capabilities. Reference `games/agents/thinking_react_agent.py` and configure via `roles.<role_name>.agent.type` in YAML.
+- **Design memory systems** - Build memory architectures that help agents remember game history, player behaviors, and strategic patterns. Create formatters for message formatting and token management. Configure via `roles.<role_name>.agent.kwargs.memory` and `roles.<role_name>.agent.kwargs.formatter` in YAML.
 - **Train models** - Use the provided training pipeline to fine-tune models for specific roles, strategies, or game scenarios.
+
+**Configuration Structure:** Each role configuration has separate `model` and `agent` sub-sections, making it easy to customize both independently. The `default_role` section provides defaults for all roles, which can be overridden per-role in the `roles` section.
 
 See `games/games/avalon/configs/default_config.yaml` and `games/games/diplomacy/configs/default_config.yaml` for detailed configuration examples.
 

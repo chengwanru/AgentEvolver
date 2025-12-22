@@ -199,7 +199,10 @@ from games.agent_factory import (
     create_model_from_config,
     create_memory_from_config,
     create_formatter_from_config,
+<<<<<<< HEAD
     # create_toolkit_from_config,
+=======
+>>>>>>> origin/dev/game_main
 )
 
 __all__ = [
@@ -211,6 +214,5 @@ __all__ = [
     "create_model_from_config",
     "create_memory_from_config",
     "create_formatter_from_config",
-    "create_toolkit_from_config",
 ]
 
