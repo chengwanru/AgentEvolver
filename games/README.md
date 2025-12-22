@@ -233,7 +233,7 @@ Results are displayed in formatted tables with:
 - **Role-level statistics**: Performance metrics broken down by role (e.g., Merlin, Servant, Assassin, Minion for Avalon) with mean, max, and min values
 - **Summary**: Total number of games completed and overall statistics
 
-🏟️ **For large-scale evaluations** with multiple models, fair model assignment, and Elo-based rankings, see the [Arena Leaderboard documentation](games/evaluation/leaderboard/README.md).
+🏟️ **For large-scale evaluations** with multiple models, fair model assignment, and Elo-based rankings, see the [Arena Leaderboard documentation](evaluation/leaderboard/README.md).
 
 ---
 
