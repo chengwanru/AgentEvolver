@@ -14,7 +14,7 @@ from agentscope.message import Msg
 from agentscope.agent import AgentBase
 from agentscope.memory import InMemoryMemory
 
-# 引入重构后的工具函数
+# Import refactored utility functions
 from .utils import Colors, add_legend_to_svg, save_game_logs, order_to_natural_language, load_prompts, parse_negotiation_messages
 from .engine import DiplomacyConfig
 
@@ -80,8 +80,8 @@ class DiplomacyGame:
 
     def _assign_agents(self):
         """Assign powers to agents."""
-        # 使用config.power_names来保持与前端传入的顺序一致
-        # 如果config中没有指定，则使用game.powers.keys()的默认顺序
+        # Use config.power_names to maintain order consistent with frontend
+        # If not specified in config, use default order from game.powers.keys()
         power_names = self.config.power_names if self.config.power_names else list(self.game.powers.keys())
         for i, power_name in enumerate(power_names):
             if hasattr(self.agents[i], 'model') and self.agents[i].model is not None:
@@ -267,7 +267,7 @@ class DiplomacyGame:
             if self.state_manager:
                 self.state_manager.save_history_snapshot(kind="result")
 
-            # 实时写入日志
+            # Write logs in real-time
             if self.game_log_dir:
                 await save_game_logs(self.agents, self.game, self.game_log, self.game_log_dir)
 
@@ -284,7 +284,7 @@ class DiplomacyGame:
         if self.state_manager:
             self.state_manager.update_game_state(status="finished")
 
-        # 游戏结束后再写一次日志，确保最终状态
+        # Write logs once more after game ends to ensure final state
         if self.game_log_dir:
             await save_game_logs(self.agents, self.game, self.game_log, self.game_log_dir)
 
@@ -362,7 +362,7 @@ class DiplomacyGame:
                     self._debug_print(f"{Colors.OKGREEN}{log_msg}{Colors.ENDC}")
                     
                     # Broadcast to observer
-                    await self._broadcast(f"{log_msg}", sender=sender) #给obs看
+                    await self._broadcast(f"{log_msg}", sender=sender)
 
             phase_log["negotiation"].append(round_negotiation_log)
 
@@ -472,7 +472,7 @@ class DiplomacyGame:
             if isinstance(result, Exception):
                 continue
             if not isinstance(result, tuple) or len(result) != 3:
-                continue  # 跳过格式不正确的结果
+                continue  # Skip incorrectly formatted results
             
             power_name, submitted_orders, translated_orders = result
             if submitted_orders:
