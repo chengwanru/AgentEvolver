@@ -211,6 +211,8 @@ From the web interface you can:
 
 ### Run a Model Evaluation
 
+Run batch evaluations to systematically assess model performance across multiple games:
+
 ```bash
 python games/evaluation/run_eval.py \
     --game avalon \
@@ -219,16 +221,15 @@ python games/evaluation/run_eval.py \
     --max-workers 5
 ```
 
-**Options:** `--game` / `-g` (required), `--config` / `-c` (required), `--num-games` / `-n` (default: 1), `--max-workers` / `-w` (default: 10), `--experiment-name`
+> To use local models, see introduction in `games/evaluation/run_eval.py`.
 
-**Local VLLM models:** Start server with `python games/evaluation/start_vllm.py`, then set `default_model.url: http://localhost:8000/v1` in config.
-
-**Output:** The evaluation results are displayed in formatted tables with:
+**Output:**
+Results are displayed in formatted tables with:
 - **Game-level statistics**: Aggregated metrics (e.g., win rates, game duration) with mean, max, and min values across all games
 - **Role-level statistics**: Performance metrics broken down by role (e.g., Merlin, Servant, Assassin, Minion for Avalon) with mean, max, and min values
 - **Summary**: Total number of games completed and overall statistics
 
-For large-scale evaluations with multiple models, fair model assignment, and Elo-based rankings, see the [Arena Leaderboard documentation](games/evaluation/leaderboard/README.md).
+🏟️ **For large-scale evaluations** with multiple models, fair model assignment, and Elo-based rankings, see the [Arena Leaderboard documentation](games/evaluation/leaderboard/README.md).
 
 ---
 
