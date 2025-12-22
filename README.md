@@ -127,6 +127,10 @@ python launcher.py --conf examples/basic.yaml --with-appworld
 python launcher.py --conf examples/overall.yaml --with-appworld --with-reme
 ```
 
+Alternatively, you can use bash scripts for manual execution: `bash examples/run_basic.sh` or `bash examples/run_overall.sh`. See [Advanced Usage](#-advanced-usage) for more details.
+
+
+
 ## 🎮 AgentEvolver Game Arena
 
 **[AgentEvolver Game Arena](games/README.md)** extends **AgentEvolver** into **multi-agent social game environments**, providing a unified arena for **interaction, evaluation, and training** of AI agents in long-horizon social reasoning tasks.
@@ -135,6 +139,25 @@ Key capabilities include:
 - **Web-based interaction** – Observe AI agents' reasoning and communication in real time, or participate as a human player.
 - **Scalable evaluation** – Run large-scale self-play or mixed-model tournaments with configurable settings and leaderboards.
 - **End-to-end training support** – Train LLM agents directly within social game environments using reinforcement learning–based methods (e.g., GRPO).
+
+**Web Interface Demo:**
+
+<table style="border: none; border-collapse: collapse;">
+<tr>
+<td align="center" width="50%" style="border: none; text-align: center;">
+  <img src="docs/img/games/avalon_demo_extracted.gif" alt="Avalon Demo" width="100%" />
+  <br><strong>Avalon</strong>
+</td>
+<td align="center" width="50%" style="border: none; text-align: center;">
+  <img src="docs/img/games/diplomacy_demo_extracted.gif" alt="Diplomacy Demo" width="100%" />
+  <br><strong>Diplomacy</strong>
+</td>
+</tr>
+</table>
+
+**Training Example:** Training curve for the assassin role in Avalon
+
+<img src="docs/img/games/training_curve.jpg" alt="Training Curve" width="80%">
 
 For detailed documentation, quick start guides, and configuration examples, see the **[Game Arena README](games/README.md)**.
 
